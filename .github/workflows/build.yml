@@ -1,0 +1,28 @@
+name: Windows build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Build solution
+        run: dotnet build src/AuctionPurchase.sln -c Release -m:1
+      - name: Run database and export checks
+        run: dotnet run --project src/AuctionPurchase.RegressionTests -c Release --no-build
+      - name: Check fresh portable setup
+        run: dotnet run --project src/AuctionPurchase.RegressionTests -c Release --no-build -- --portable
+      - name: Package portable application
+        shell: pwsh
+        run: ./scripts/package.ps1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AuctionPurchase-Windows-x64
+          path: dist/AuctionPurchase.zip

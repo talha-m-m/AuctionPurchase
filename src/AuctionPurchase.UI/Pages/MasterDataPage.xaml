@@ -1,0 +1,258 @@
+<Page x:Class="AuctionPurchase.UI.Pages.MasterDataPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="{DynamicResource ThemeSurface_1A1A2E_Surface}" FontFamily="Segoe UI">
+    <Page.Resources>
+        <Style x:Key="MasterCellText" TargetType="TextBlock">
+            <Setter Property="Margin" Value="10,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+            <Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/>
+        </Style>
+        <Style x:Key="RowActionButton" TargetType="Button">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="MinWidth" Value="58"/>
+            <Setter Property="Margin" Value="0,0,6,0"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Background" Value="{DynamicResource ActionBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ActionForeground}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ActionBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ButtonBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="ButtonBorder" Property="BorderBrush" Value="#4361EE"/></Trigger>
+                            <Trigger Property="IsEnabled" Value="False"><Setter TargetName="ButtonBorder" Property="Opacity" Value="0.5"/></Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True"><Setter Property="Background" Value="{DynamicResource ActionHover}"/></Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="StateActionButton" TargetType="Button" BasedOn="{StaticResource RowActionButton}">
+            <Setter Property="MinWidth" Value="96"/>
+            <Setter Property="Background" Value="{DynamicResource NeutralActionBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource NeutralActionForeground}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource NeutralActionBorder}"/>
+            <Setter Property="Content" Value="Activate"/>
+            <Setter Property="ToolTip" Value="Activate this item"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsActive}" Value="True">
+                    <Setter Property="Content" Value="Deactivate"/>
+                    <Setter Property="ToolTip" Value="Deactivate this item"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="DeleteActionButton" TargetType="Button" BasedOn="{StaticResource RowActionButton}">
+            <Setter Property="Background" Value="{DynamicResource DangerActionBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource DangerActionForeground}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource DangerActionBorder}"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True"><Setter Property="Background" Value="{DynamicResource DangerActionHover}"/></Trigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Grid.Row="0" Margin="0,0,0,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <TextBlock x:Name="TxtPageTitle" Text="Master Data" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource ThemeText_FFFFFF_Text}"/>
+                <TextBlock Text="Manage reference data used throughout the application" FontSize="13" Foreground="{DynamicResource ThemeText_6B7A9A_Text}" Margin="0,4,0,0"/>
+            </StackPanel>
+            <TextBox x:Name="TxtSearch" Grid.Column="1" Width="250" Height="38" Margin="0,0,16,0" VerticalAlignment="Top"
+                     ToolTip="Search items" TextChanged="TxtSearch_TextChanged"/>
+
+            <Button x:Name="BtnAddNew" Grid.Column="2" Content="+ Add New" Width="120" Height="38" VerticalAlignment="Top"
+                    Background="#4361EE" Foreground="White" BorderThickness="0" FontSize="13" Cursor="Hand"
+                    Click="BtnAddNew_Click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#3451D1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </Grid>
+
+        <!-- The Edit/Add Form has been moved to a Popup Overlay at the end of the file -->
+
+        <!-- Data Grid -->
+        <Border Grid.Row="2" Background="{DynamicResource ThemeSurface_16213E_Surface}" CornerRadius="12">
+            <DataGrid x:Name="GridData" AutoGenerateColumns="False" IsReadOnly="True"
+                      Background="{DynamicResource ThemeSurface_16213E_Surface}" Foreground="{DynamicResource ThemeText_D0D8F0_Text}" BorderThickness="1" BorderBrush="{DynamicResource TableBorder}"
+                      RowBackground="{DynamicResource ThemeSurface_1E2748_Surface}" AlternatingRowBackground="{DynamicResource ThemeSurface_16213E_Surface}"
+                      GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource ThemeSurface_1A2540_Surface}"
+                      HeadersVisibility="Column" SelectionMode="Single"
+                      CanUserReorderColumns="False" CanUserResizeRows="False" FontSize="13" RowHeight="46" ColumnHeaderHeight="44">
+                <DataGrid.Columns>
+                    <DataGridTextColumn ElementStyle="{StaticResource MasterCellText}" x:Name="ColId" Header="ID" Binding="{Binding Id}" Width="60"/>
+                    <DataGridTextColumn ElementStyle="{StaticResource MasterCellText}" x:Name="ColName" Header="Name" Binding="{Binding Name}" Width="*" MinWidth="150"/>
+                    <DataGridTextColumn ElementStyle="{StaticResource MasterCellText}" x:Name="ColDescription" Header="Description" Binding="{Binding Description}" Width="150" Visibility="Collapsed"/>
+                    <DataGridTextColumn ElementStyle="{StaticResource MasterCellText}" x:Name="ColFullName" Header="Full Name" Binding="{Binding FullName}" Width="150" Visibility="Collapsed"/>
+                    <DataGridTextColumn ElementStyle="{StaticResource MasterCellText}" x:Name="ColAddress" Header="Address" Binding="{Binding Address}" Width="150" Visibility="Collapsed"/>
+                    <DataGridTextColumn ElementStyle="{StaticResource MasterCellText}" x:Name="ColDistrict" Header="District" Binding="{Binding District}" Width="100" Visibility="Collapsed"/>
+                    <DataGridTextColumn ElementStyle="{StaticResource MasterCellText}" x:Name="ColAcre" Header="Acre" Binding="{Binding Acre}" Width="80" Visibility="Collapsed"/>
+                    <DataGridTextColumn ElementStyle="{StaticResource MasterCellText}" x:Name="ColGardenType" Header="Garden Type" Binding="{Binding GardenType}" Width="100" Visibility="Collapsed"/>
+                    <DataGridTextColumn ElementStyle="{StaticResource MasterCellText}" x:Name="ColMapLink" Header="MAP Link" Binding="{Binding MapLink}" Width="150" Visibility="Collapsed"/>
+                    <DataGridTemplateColumn x:Name="ColActive" Header="Status" Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border Padding="9,4" CornerRadius="6" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8,0">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="{DynamicResource StatusActiveBackground}"/>
+                                            <Style.Triggers><DataTrigger Binding="{Binding IsActive}" Value="False"><Setter Property="Background" Value="{DynamicResource NeutralActionBackground}"/></DataTrigger></Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <TextBlock Text="{Binding IsActiveDisplay}" FontSize="11" FontWeight="SemiBold">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Foreground" Value="{DynamicResource StatusActiveForeground}"/>
+                                                <Style.Triggers><DataTrigger Binding="{Binding IsActive}" Value="False"><Setter Property="Foreground" Value="{DynamicResource NeutralActionForeground}"/></DataTrigger></Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn x:Name="ColActions" Header="Actions" Width="260" MinWidth="260">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="8,0">
+                                    <Button Content="Edit" Style="{StaticResource RowActionButton}" Click="BtnEdit_Click" Tag="{Binding}" ToolTip="Edit this item"/>
+                                    <Button Style="{StaticResource StateActionButton}" Click="BtnToggle_Click" Tag="{Binding}"/>
+                                    <Button Content="Delete" Style="{StaticResource DeleteActionButton}" Click="BtnDelete_Click" Tag="{Binding}" Margin="0" ToolTip="Delete this item"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+        
+        <!-- Popup Overlay -->
+        <Grid x:Name="PopupOverlay" Grid.RowSpan="3" Background="#80000000" Visibility="Collapsed" Panel.ZIndex="100" Margin="-24">
+            <Border x:Name="PopupForm" Background="{DynamicResource ThemeSurface_16213E_Surface}" CornerRadius="10" Padding="0"
+                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Width="400" 
+                    RenderTransformOrigin="0.5,0.5">
+                <Border.RenderTransform>
+                    <TranslateTransform x:Name="PopupTransform" X="0" Y="0"/>
+                </Border.RenderTransform>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/> <!-- Header -->
+                        <RowDefinition Height="*"/>    <!-- Body -->
+                        <RowDefinition Height="Auto"/> <!-- Footer -->
+                    </Grid.RowDefinitions>
+                    
+                    <Grid Grid.Row="0">
+                        <Border Background="{DynamicResource ThemeSurface_1E2748_Surface}" CornerRadius="10,10,0,0" Padding="16,12">
+                            <TextBlock x:Name="PopupTitle" Text="Add / Edit Master Data" FontWeight="Bold" Foreground="{DynamicResource ThemeText_FFFFFF_Text}" FontSize="14"/>
+                        </Border>
+                        <Thumb x:Name="PopupDragThumb" DragDelta="PopupDragThumb_DragDelta" Cursor="SizeAll">
+                            <Thumb.Template>
+                                <ControlTemplate TargetType="Thumb">
+                                    <Border Background="Transparent" />
+                                </ControlTemplate>
+                            </Thumb.Template>
+                        </Thumb>
+                    </Grid>
+
+                    <Grid Grid.Row="1" Margin="20">
+                        <ScrollViewer MaxHeight="400" VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <StackPanel Margin="0,0,0,12">
+                                    <TextBlock Text="NAME" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="11" FontWeight="Bold" Margin="0,0,0,6"/>
+                                    <TextBox x:Name="TxtEditName" Background="{DynamicResource ThemeSurface_2A2A4A_Surface}" Foreground="{DynamicResource ThemeText_FFFFFF_Text}" BorderBrush="{DynamicResource ThemeSurface_3A3A5C_Surface}" BorderThickness="1" Padding="10,8" FontSize="13" CaretBrush="{DynamicResource ThemeText_FFFFFF_Text}"/>
+                                </StackPanel>
+                                <StackPanel x:Name="PanelDescription" Margin="0,0,0,12" Visibility="Collapsed">
+                                    <TextBlock Text="DESCRIPTION" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="11" FontWeight="Bold" Margin="0,0,0,6"/>
+                                    <TextBox x:Name="TxtEditDescription" Background="{DynamicResource ThemeSurface_2A2A4A_Surface}" Foreground="{DynamicResource ThemeText_FFFFFF_Text}" BorderBrush="{DynamicResource ThemeSurface_3A3A5C_Surface}" BorderThickness="1" Padding="10,8" FontSize="13" CaretBrush="{DynamicResource ThemeText_FFFFFF_Text}"/>
+                                </StackPanel>
+                                <StackPanel x:Name="PanelFullName" Margin="0,0,0,12" Visibility="Collapsed">
+                                    <TextBlock x:Name="LblFullName" Text="FULL NAME (Bangla Font)" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="11" FontWeight="Bold" Margin="0,0,0,6"/>
+                                    <TextBox x:Name="TxtEditFullName" Background="{DynamicResource ThemeSurface_2A2A4A_Surface}" Foreground="{DynamicResource ThemeText_FFFFFF_Text}" BorderBrush="{DynamicResource ThemeSurface_3A3A5C_Surface}" BorderThickness="1" Padding="10,8" FontSize="13" CaretBrush="{DynamicResource ThemeText_FFFFFF_Text}"/>
+                                </StackPanel>
+                                <StackPanel x:Name="PanelAddress" Margin="0,0,0,12" Visibility="Collapsed">
+                                    <TextBlock Text="ADDRESS" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="11" FontWeight="Bold" Margin="0,0,0,6"/>
+                                    <TextBox x:Name="TxtEditAddress" Background="{DynamicResource ThemeSurface_2A2A4A_Surface}" Foreground="{DynamicResource ThemeText_FFFFFF_Text}" BorderBrush="{DynamicResource ThemeSurface_3A3A5C_Surface}" BorderThickness="1" Padding="10,8" FontSize="13" CaretBrush="{DynamicResource ThemeText_FFFFFF_Text}"/>
+                                </StackPanel>
+                                <StackPanel x:Name="PanelDistrict" Margin="0,0,0,12" Visibility="Collapsed">
+                                    <TextBlock Text="DISTRICT" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="11" FontWeight="Bold" Margin="0,0,0,6"/>
+                                    <TextBox x:Name="TxtEditDistrict" Background="{DynamicResource ThemeSurface_2A2A4A_Surface}" Foreground="{DynamicResource ThemeText_FFFFFF_Text}" BorderBrush="{DynamicResource ThemeSurface_3A3A5C_Surface}" BorderThickness="1" Padding="10,8" FontSize="13" CaretBrush="{DynamicResource ThemeText_FFFFFF_Text}"/>
+                                </StackPanel>
+                                <StackPanel x:Name="PanelAcre" Margin="0,0,0,12" Visibility="Collapsed">
+                                    <TextBlock Text="ACRE" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="11" FontWeight="Bold" Margin="0,0,0,6"/>
+                                    <TextBox x:Name="TxtEditAcre" Background="{DynamicResource ThemeSurface_2A2A4A_Surface}" Foreground="{DynamicResource ThemeText_FFFFFF_Text}" BorderBrush="{DynamicResource ThemeSurface_3A3A5C_Surface}" BorderThickness="1" Padding="10,8" FontSize="13" CaretBrush="{DynamicResource ThemeText_FFFFFF_Text}"/>
+                                </StackPanel>
+                                <StackPanel x:Name="PanelGardenType" Margin="0,0,0,12" Visibility="Collapsed">
+                                    <TextBlock Text="GARDEN TYPE" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="11" FontWeight="Bold" Margin="0,0,0,6"/>
+                                    <TextBox x:Name="TxtEditGardenType" Background="{DynamicResource ThemeSurface_2A2A4A_Surface}" Foreground="{DynamicResource ThemeText_FFFFFF_Text}" BorderBrush="{DynamicResource ThemeSurface_3A3A5C_Surface}" BorderThickness="1" Padding="10,8" FontSize="13" CaretBrush="{DynamicResource ThemeText_FFFFFF_Text}"/>
+                                </StackPanel>
+                                <StackPanel x:Name="PanelMapLink" Margin="0,0,0,12" Visibility="Collapsed">
+                                    <TextBlock Text="MAP LINK" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="11" FontWeight="Bold" Margin="0,0,0,6"/>
+                                    <TextBox x:Name="TxtEditMapLink" Background="{DynamicResource ThemeSurface_2A2A4A_Surface}" Foreground="{DynamicResource ThemeText_FFFFFF_Text}" BorderBrush="{DynamicResource ThemeSurface_3A3A5C_Surface}" BorderThickness="1" Padding="10,8" FontSize="13" CaretBrush="{DynamicResource ThemeText_FFFFFF_Text}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Grid>
+                    
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="20,0,20,20">
+                        <Button x:Name="BtnSaveItem" Content="💾 Save" Width="90" Height="38"
+                                Background="#06A77D" Foreground="White" BorderThickness="0" FontSize="13" Cursor="Hand"
+                                Margin="0,0,8,0" Click="BtnSaveItem_Click">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="8">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        <Button Content="✕ Cancel" Width="90" Height="38"
+                                Background="{DynamicResource ThemeSurface_2D2D4E_Surface}" Foreground="{DynamicResource ThemeText_B0B8D1_Text}" BorderThickness="0" FontSize="13" Cursor="Hand"
+                                Click="BtnCancelEdit_Click">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="8">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>

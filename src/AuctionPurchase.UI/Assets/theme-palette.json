@@ -1,0 +1,578 @@
+{
+  "ThemeColor_2A2A4A_Surface": {
+    "Dark": "#2A2A4A",
+    "Light": "#FFFFFF"
+  },
+  "ThemeColor_3A3A5C_Surface": {
+    "Dark": "#3A3A5C",
+    "Light": "#CBD5E1"
+  },
+  "ThemeColor_FFFFFF_Text": {
+    "Dark": "#FFFFFF",
+    "Light": "#0F172A"
+  },
+  "ThemeColor_1E1E36_Surface": {
+    "Dark": "#1E1E36",
+    "Light": "#FFFFFF"
+  },
+  "ThemeText_FFFFFF_Text": {
+    "Dark": "#FFFFFF",
+    "Light": "#0F172A"
+  },
+  "ThemeText_A5AEC8_Text": {
+    "Dark": "#A5AEC8",
+    "Light": "#64748B"
+  },
+  "ThemeSurface_4361EE_Surface": {
+    "Dark": "#4361EE",
+    "Light": "#DBEAFE"
+  },
+  "ThemeSurface_3451D1_Surface": {
+    "Dark": "#3451D1",
+    "Light": "#DBEAFE"
+  },
+  "ThemeText_6B7A9A_Text": {
+    "Dark": "#6B7A9A",
+    "Light": "#64748B"
+  },
+  "ThemeText_8890AB_Text": {
+    "Dark": "#8890AB",
+    "Light": "#64748B"
+  },
+  "ThemeSurface_2D2D4E_Surface": {
+    "Dark": "#2D2D4E",
+    "Light": "#F1F5F9"
+  },
+  "ThemeSurface_0F3460_Surface": {
+    "Dark": "#0F3460",
+    "Light": "#F1F5F9"
+  },
+  "ThemeSurface_16213E_Surface": {
+    "Dark": "#16213E",
+    "Light": "#FFFFFF"
+  },
+  "ThemeText_D0D8F0_Text": {
+    "Dark": "#D0D8F0",
+    "Light": "#334155"
+  },
+  "ThemeSurface_2A4A8A_Surface": {
+    "Dark": "#2A4A8A",
+    "Light": "#DBEAFE"
+  },
+  "ThemeSurface_1A1A2E_Surface": {
+    "Dark": "#1A1A2E",
+    "Light": "#F4F6FA"
+  },
+  "ThemeText_B0B8D1_Text": {
+    "Dark": "#B0B8D1",
+    "Light": "#17243B"
+  },
+  "ThemeSurface_2A2A4A_Surface": {
+    "Dark": "#2A2A4A",
+    "Light": "#FFFFFF"
+  },
+  "ThemeSurface_555577_Surface": {
+    "Dark": "#555577",
+    "Light": "#DBEAFE"
+  },
+  "ThemeSurface_3A3A5C_Surface": {
+    "Dark": "#3A3A5C",
+    "Light": "#CBD5E1"
+  },
+  "ThemeSurface_1A1A40_Surface": {
+    "Dark": "#1A1A40",
+    "Light": "#EDF2F8"
+  },
+  "ThemeText_7A88AA_Text": {
+    "Dark": "#7A88AA",
+    "Light": "#526178"
+  },
+  "ThemeSurface_1E3A5F_Surface": {
+    "Dark": "#1E3A5F",
+    "Light": "#E2E8F0"
+  },
+  "ThemeText_4A5A7A_Text": {
+    "Dark": "#4A5A7A",
+    "Light": "#526178"
+  },
+  "ThemeText_3A4A6A_Text": {
+    "Dark": "#3A4A6A",
+    "Light": "#526178"
+  },
+  "ThemeSurface_101A32_Surface": {
+    "Dark": "#101A32",
+    "Light": "#FFFFFF"
+  },
+  "ThemeSurface_121324_Surface": {
+    "Dark": "#121324",
+    "Light": "#FFFFFF"
+  },
+  "ThemeText_E2E8F0_Text": {
+    "Dark": "#E2E8F0",
+    "Light": "#17243B"
+  },
+  "ThemeSurface_242846_Surface": {
+    "Dark": "#242846",
+    "Light": "#EDF2F8"
+  },
+  "ThemeSurface_353D68_Surface": {
+    "Dark": "#353D68",
+    "Light": "#DBEAFE"
+  },
+  "ThemeSurface_1E223D_Surface": {
+    "Dark": "#1E223D",
+    "Light": "#FFFFFF"
+  },
+  "ThemeText_CBD5E1_Text": {
+    "Dark": "#CBD5E1",
+    "Light": "#17243B"
+  },
+  "ThemeSurface_333A63_Surface": {
+    "Dark": "#333A63",
+    "Light": "#EDF2F8"
+  },
+  "ThemeText_7A87A8_Text": {
+    "Dark": "#7A87A8",
+    "Light": "#64748B"
+  },
+  "ThemeText_4A5675_Text": {
+    "Dark": "#4A5675",
+    "Light": "#526178"
+  },
+  "ThemeText_A2B4E6_Text": {
+    "Dark": "#A2B4E6",
+    "Light": "#17243B"
+  },
+  "ThemeSurface_1D2A4F_Surface": {
+    "Dark": "#1D2A4F",
+    "Light": "#EFF6FF"
+  },
+  "ThemeSurface_3A4D80_Surface": {
+    "Dark": "#3A4D80",
+    "Light": "#DBEAFE"
+  },
+  "ThemeText_8EA2D8_Text": {
+    "Dark": "#8EA2D8",
+    "Light": "#17243B"
+  },
+  "ThemeText_60A5FA_Text": {
+    "Dark": "#60A5FA",
+    "Light": "#114F9C"
+  },
+  "ThemeText_8896B8_Text": {
+    "Dark": "#8896B8",
+    "Light": "#526178"
+  },
+  "ThemeSurface_1A2035_Surface": {
+    "Dark": "#1A2035",
+    "Light": "#FFFFFF"
+  },
+  "ThemeSurface_2C3558_Surface": {
+    "Dark": "#2C3558",
+    "Light": "#EDF2F8"
+  },
+  "ThemeSurface_161B33_Surface": {
+    "Dark": "#161B33",
+    "Light": "#FFFFFF"
+  },
+  "ThemeSurface_1E2850_Surface": {
+    "Dark": "#1E2850",
+    "Light": "#EDF2F8"
+  },
+  "ThemeText_556488_Text": {
+    "Dark": "#556488",
+    "Light": "#526178"
+  },
+  "ThemeSurface_2B1D4F_Surface": {
+    "Dark": "#2B1D4F",
+    "Light": "#EDF2F8"
+  },
+  "ThemeText_A78BFA_Text": {
+    "Dark": "#A78BFA",
+    "Light": "#34119C"
+  },
+  "ThemeSurface_0C3428_Surface": {
+    "Dark": "#0C3428",
+    "Light": "#ECFDF5"
+  },
+  "ThemeText_34D399_Text": {
+    "Dark": "#34D399",
+    "Light": "#1F8F66"
+  },
+  "ThemeText_6EE7B7_Text": {
+    "Dark": "#6EE7B7",
+    "Light": "#199564"
+  },
+  "ThemeSurface_133324_Surface": {
+    "Dark": "#133324",
+    "Light": "#ECFDF5"
+  },
+  "ThemeText_10B981_Text": {
+    "Dark": "#10B981",
+    "Light": "#119C6E"
+  },
+  "ThemeSurface_332A15_Surface": {
+    "Dark": "#332A15",
+    "Light": "#FFF1F2"
+  },
+  "ThemeText_FBBF24_Text": {
+    "Dark": "#FBBF24",
+    "Light": "#9C7511"
+  },
+  "ThemeSurface_1C2E4A_Surface": {
+    "Dark": "#1C2E4A",
+    "Light": "#EDF2F8"
+  },
+  "ThemeSurface_212A52_Surface": {
+    "Dark": "#212A52",
+    "Light": "#EDF2F8"
+  },
+  "ThemeText_93C5FD_Text": {
+    "Dark": "#93C5FD",
+    "Light": "#11539C"
+  },
+  "ThemeSurface_0A1128_Surface": {
+    "Dark": "#0A1128",
+    "Light": "#FFFFFF"
+  },
+  "ThemeSurface_1F264A_Surface": {
+    "Dark": "#1F264A",
+    "Light": "#EDF2F8"
+  },
+  "ThemeSurface_233256_Surface": {
+    "Dark": "#233256",
+    "Light": "#EDF2F8"
+  },
+  "ThemeText_94A3B8_Text": {
+    "Dark": "#94A3B8",
+    "Light": "#64748B"
+  },
+  "ThemeSurface_181E38_Surface": {
+    "Dark": "#181E38",
+    "Light": "#FFFFFF"
+  },
+  "ThemeSurface_3B4B7C_Surface": {
+    "Dark": "#3B4B7C",
+    "Light": "#DBEAFE"
+  },
+  "ThemeSurface_242E54_Surface": {
+    "Dark": "#242E54",
+    "Light": "#EDF2F8"
+  },
+  "ThemeText_F59E0B_Text": {
+    "Dark": "#F59E0B",
+    "Light": "#9C6811"
+  },
+  "ThemeSurface_0C1022_Surface": {
+    "Dark": "#0C1022",
+    "Light": "#FFFFFF"
+  },
+  "ThemeSurface_232C52_Surface": {
+    "Dark": "#232C52",
+    "Light": "#EDF2F8"
+  },
+  "ThemeSurface_29335C_Surface": {
+    "Dark": "#29335C",
+    "Light": "#EDF2F8"
+  },
+  "ThemeSurface_222B52_Surface": {
+    "Dark": "#222B52",
+    "Light": "#EDF2F8"
+  },
+  "ThemeSurface_0F142A_Surface": {
+    "Dark": "#0F142A",
+    "Light": "#F1F5F9"
+  },
+  "ThemeSurface_14182E_Surface": {
+    "Dark": "#14182E",
+    "Light": "#FFFFFF"
+  },
+  "ThemeSurface_2D3A68_Surface": {
+    "Dark": "#2D3A68",
+    "Light": "#DBEAFE"
+  },
+  "ThemeSurface_1C3829_Surface": {
+    "Dark": "#1C3829",
+    "Light": "#ECFDF5"
+  },
+  "ThemeSurface_1C2242_Surface": {
+    "Dark": "#1C2242",
+    "Light": "#EDF2F8"
+  },
+  "ThemeSurface_0A0E1D_Surface": {
+    "Dark": "#0A0E1D",
+    "Light": "#F4F7FC"
+  },
+  "ThemeSurface_1C2442_Surface": {
+    "Dark": "#1C2442",
+    "Light": "#EDF2F8"
+  },
+  "ThemeText_F7A400_Text": {
+    "Dark": "#F7A400",
+    "Light": "#9C6D11"
+  },
+  "ThemeText_4361EE_Text": {
+    "Dark": "#4361EE",
+    "Light": "#112A9C"
+  },
+  "ThemeText_7B2FBE_Text": {
+    "Dark": "#7B2FBE",
+    "Light": "#5A228B"
+  },
+  "ThemeText_06A77D_Text": {
+    "Dark": "#06A77D",
+    "Light": "#119C78"
+  },
+  "ThemeSurface_1A2540_Surface": {
+    "Dark": "#1A2540",
+    "Light": "#E2E8F0"
+  },
+  "ThemeSurface_1E2748_Surface": {
+    "Dark": "#1E2748",
+    "Light": "#F8FAFC"
+  },
+  "ThemeSurface_5C1D27_Surface": {
+    "Dark": "#5C1D27",
+    "Light": "#FFF1F2"
+  },
+  "ThemeText_FFB3BC_Text": {
+    "Dark": "#FFB3BC",
+    "Light": "#9F1239"
+  },
+  "ThemeSurface_8A1C28_Surface": {
+    "Dark": "#8A1C28",
+    "Light": "#FFE4E6"
+  },
+  "ThemeSurface_058060_Surface": {
+    "Dark": "#058060",
+    "Light": "#ECFDF5"
+  },
+  "ThemeText_FFE0B2_Text": {
+    "Dark": "#FFE0B2",
+    "Light": "#92400E"
+  },
+  "ThemeSurface_0F1F3D_Surface": {
+    "Dark": "#0F1F3D",
+    "Light": "#F1F5F9"
+  },
+  "ThemeSurface_141829_Surface": {
+    "Dark": "#141829",
+    "Light": "#F1F5F9"
+  },
+  "ThemeSurface_3D3D6E_Surface": {
+    "Dark": "#3D3D6E",
+    "Light": "#DBEAFE"
+  },
+  "ThemeSurface_4D2A12_Surface": {
+    "Dark": "#4D2A12",
+    "Light": "#FFFBEB"
+  },
+  "ThemeSurface_613617_Surface": {
+    "Dark": "#613617",
+    "Light": "#FEF3C7"
+  },
+  "ThemeText_75A7FF_Text": {
+    "Dark": "#75A7FF",
+    "Light": "#11449C"
+  },
+  "ThemeText_D62839_Text": {
+    "Dark": "#D62839",
+    "Light": "#921B27"
+  },
+  "ThemeSurface_0F1628_Surface": {
+    "Dark": "#0F1628",
+    "Light": "#FFFFFF"
+  },
+  "ThemeText_75E6B7_Text": {
+    "Dark": "#75E6B7",
+    "Light": "#1B9361"
+  },
+  "ThemeText_FF6B6B_Text": {
+    "Dark": "#FF6B6B",
+    "Light": "#9C1111"
+  },
+  "ThemeSurface_1A3A6A_Surface": {
+    "Dark": "#1A3A6A",
+    "Light": "#DBEAFE"
+  },
+  "ThemeSurface_1E3A6A_Surface": {
+    "Dark": "#1E3A6A",
+    "Light": "#DBEAFE"
+  },
+  "ThemeSurface_2A1A3A_Surface": {
+    "Dark": "#2A1A3A",
+    "Light": "#FFFFFF"
+  },
+  "ThemeText_C9A0FF_Text": {
+    "Dark": "#C9A0FF",
+    "Light": "#4D119C"
+  },
+  "ThemeSurface_0A0F1E_Surface": {
+    "Dark": "#0A0F1E",
+    "Light": "#FFFFFF"
+  },
+  "ThemeText_5A6684_Text": {
+    "Dark": "#5A6684",
+    "Light": "#526178"
+  },
+  "ThemeText_00B4D8_Text": {
+    "Dark": "#00B4D8",
+    "Light": "#11859C"
+  },
+  "ThemeText_FFD700_Text": {
+    "Dark": "#FFD700",
+    "Light": "#9C8611"
+  },
+  "ThemeSurface_3D1A1A_Surface": {
+    "Dark": "#3D1A1A",
+    "Light": "#FFF1F2"
+  },
+  "ThemeSurface_5D2A2A_Surface": {
+    "Dark": "#5D2A2A",
+    "Light": "#FFF1F2"
+  },
+  "ThemeSurface_0D1B33_Surface": {
+    "Dark": "#0D1B33",
+    "Light": "#FFFFFF"
+  },
+  "ThemeText_FF7182_Text": {
+    "Dark": "#FF7182",
+    "Light": "#9C1122"
+  },
+  "ThemeSurface_242B45_Surface": {
+    "Dark": "#242B45",
+    "Light": "#EDF2F8"
+  },
+  "ThemeText_7E8BA8_Text": {
+    "Dark": "#7E8BA8",
+    "Light": "#64748B"
+  },
+  "ThemeSurface_1E293B_Surface": {
+    "Dark": "#1E293B",
+    "Light": "#F1F5F9"
+  },
+  "ThemeSurface_3A1010_Surface": {
+    "Dark": "#3A1010",
+    "Light": "#FFF1F2"
+  },
+  "ThemeText_FF8080_Text": {
+    "Dark": "#FF8080",
+    "Light": "#9C1111"
+  },
+  "ThemeSurface_1B213E_Surface": {
+    "Dark": "#1B213E",
+    "Light": "#EDF2F8"
+  },
+  "ThemeText_EF4444_Text": {
+    "Dark": "#EF4444",
+    "Light": "#B91C1C"
+  },
+  "ThemeText_F87171_Text": {
+    "Dark": "#F87171",
+    "Light": "#B91C1C"
+  },
+  "ThemeSurface_38181C_Surface": {
+    "Dark": "#38181C",
+    "Light": "#FFF1F2"
+  },
+  "ValidationBackground": {
+    "Dark": "#421A24",
+    "Light": "#FFF1F2"
+  },
+  "ValidationBorder": {
+    "Dark": "#E63946",
+    "Light": "#FDA4AF"
+  },
+  "ValidationForeground": {
+    "Dark": "#FFB3BC",
+    "Light": "#9F1239"
+  },
+  "TableBackground": {
+    "Dark": "#16213E",
+    "Light": "#FFFFFF"
+  },
+  "TableAlternate": {
+    "Dark": "#1E2748",
+    "Light": "#F8FAFC"
+  },
+  "TableHeader": {
+    "Dark": "#0F3460",
+    "Light": "#F1F5F9"
+  },
+  "TableBorder": {
+    "Dark": "#1A2540",
+    "Light": "#E2E8F0"
+  },
+  "TableForeground": {
+    "Dark": "#D0D8F0",
+    "Light": "#334155"
+  },
+  "ActionBackground": {
+    "Dark": "#23365C",
+    "Light": "#EFF6FF"
+  },
+  "ActionForeground": {
+    "Dark": "#A5C7FF",
+    "Light": "#1D4ED8"
+  },
+  "ActionBorder": {
+    "Dark": "#3A527F",
+    "Light": "#BFDBFE"
+  },
+  "ActionHover": {
+    "Dark": "#304B7A",
+    "Light": "#DBEAFE"
+  },
+  "NeutralActionBackground": {
+    "Dark": "#252F49",
+    "Light": "#F8FAFC"
+  },
+  "NeutralActionForeground": {
+    "Dark": "#C5CEE3",
+    "Light": "#475569"
+  },
+  "NeutralActionBorder": {
+    "Dark": "#3A4662",
+    "Light": "#CBD5E1"
+  },
+  "DangerActionBackground": {
+    "Dark": "#3E2430",
+    "Light": "#FFF1F2"
+  },
+  "DangerActionForeground": {
+    "Dark": "#FFADB8",
+    "Light": "#BE123C"
+  },
+  "DangerActionBorder": {
+    "Dark": "#6A3546",
+    "Light": "#FECDD3"
+  },
+  "DangerActionHover": {
+    "Dark": "#572D3C",
+    "Light": "#FFE4E6"
+  },
+  "StatusActiveBackground": {
+    "Dark": "#163D30",
+    "Light": "#ECFDF5"
+  },
+  "StatusActiveForeground": {
+    "Dark": "#6EE7B7",
+    "Light": "#047857"
+  },
+  "InputBackgroundBrush": {
+    "Light": "#FFFFFF",
+    "Dark": "#2A2A4A"
+  },
+  "InputBorderBrush": {
+    "Light": "#CBD5E1",
+    "Dark": "#3A3A5C"
+  },
+  "InputTextBrush": {
+    "Light": "#0F172A",
+    "Dark": "#FFFFFF"
+  },
+  "PopupBackgroundBrush": {
+    "Light": "#FFFFFF",
+    "Dark": "#1E1E36"
+  }
+}

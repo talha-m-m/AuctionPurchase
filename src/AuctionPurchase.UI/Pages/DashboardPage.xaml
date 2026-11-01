@@ -1,0 +1,973 @@
+<Page x:Class="AuctionPurchase.UI.Pages.DashboardPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="clr-namespace:AuctionPurchase.UI.Services"
+      Background="{DynamicResource ThemeSurface_121324_Surface}" FontFamily="Segoe UI" Foreground="{DynamicResource ThemeText_E2E8F0_Text}">
+
+    <Page.Resources>
+        <!-- Modern Card Shadow Effect -->
+        <DropShadowEffect x:Key="CardShadow" Color="#000000" BlurRadius="22" ShadowDepth="4" Opacity="0.35"/>
+        <DropShadowEffect x:Key="GlowShadowEmerald" Color="#06A77D" BlurRadius="16" ShadowDepth="0" Opacity="0.6"/>
+        <DropShadowEffect x:Key="GlowShadowIndigo" Color="#4361EE" BlurRadius="16" ShadowDepth="0" Opacity="0.5"/>
+
+        <!-- Pill Button Style -->
+        <Style x:Key="PillButton" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ThemeSurface_242846_Surface}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeText_D0D8F0_Text}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="12,6"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="14" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource ThemeSurface_353D68_Surface}"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PillButtonActive" BasedOn="{StaticResource PillButton}" TargetType="Button">
+            <Setter Property="Background" Value="#4361EE"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <!-- Tool button style for map controls -->
+        <Style x:Key="MapToolButton" TargetType="Button">
+            <Setter Property="Width" Value="34"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Background" Value="{DynamicResource ThemeSurface_1E223D_Surface}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeText_CBD5E1_Text}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeSurface_333A63_Surface}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#4361EE"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="BorderBrush" Value="#4361EE"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
+    <Grid>
+        <!-- Main Dashboard Scrollable Content -->
+        <ScrollViewer x:Name="DashboardScrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <Grid Margin="28,24,28,32">
+                <Grid.RowDefinitions>
+                    <!-- Row 0: Header & Navigation Breadcrumb -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Row 1: Top Executive Metrics (KPI Cards) -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Row 2: Analytics & Geographic Visualizations (Map + Charts) -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Row 3: Recent Sales Header & Filters -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Row 4: Recent Sales DataGrid -->
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- ============================================================ -->
+                <!-- 1. Header & Navigation: Breadcrumb, Date, Season & Switcher   -->
+                <!-- ============================================================ -->
+                <Grid Grid.Row="0" Margin="0,0,0,22">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <!-- Breadcrumb -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                            <TextBlock Text="🏠 Home" Foreground="{DynamicResource ThemeText_7A87A8_Text}" FontSize="13" FontWeight="Medium"/>
+                            <TextBlock Text="  ›  " Foreground="{DynamicResource ThemeText_4A5675_Text}" FontSize="13"/>
+                            <TextBlock Text="Executive Dashboard" Foreground="{DynamicResource ThemeText_A2B4E6_Text}" FontSize="13" FontWeight="SemiBold"/>
+                        </StackPanel>
+
+                        <!-- Title and active season badge -->
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="Executive Tea Procurement Dashboard" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource ThemeText_FFFFFF_Text}"/>
+                            
+                            <Border x:Name="BadgeSeason" Background="{DynamicResource ThemeSurface_1D2A4F_Surface}" BorderBrush="{DynamicResource ThemeSurface_3A4D80_Surface}" BorderThickness="1"
+                                    CornerRadius="14" Margin="14,2,0,0" Padding="12,4" VerticalAlignment="Center">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="🌱 Season:" Foreground="{DynamicResource ThemeText_8EA2D8_Text}" FontSize="12" FontWeight="Medium" Margin="0,0,4,0"/>
+                                    <TextBlock x:Name="TxtSeasonLabel" Text="2026-2027" Foreground="{DynamicResource ThemeText_60A5FA_Text}" FontSize="12" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- Date subtitle -->
+                        <TextBlock x:Name="TxtTodayDate" Text="Thursday, 15 October 2026" FontSize="13" Foreground="{DynamicResource ThemeText_8896B8_Text}" Margin="0,4,0,0"/>
+                    </StackPanel>
+
+                    <!-- Top Action Right Side -->
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button x:Name="BtnRefreshDashboard" Content="🔄 Refresh"
+                                Style="{StaticResource PillButton}" Margin="0,0,10,0" Click="BtnRefreshDashboard_Click"/>
+                        
+                    </StackPanel>
+                </Grid>
+
+                <!-- ============================================================ -->
+                <!-- 2. Top Executive Metrics (KPI Cards)                         -->
+                <!-- ============================================================ -->
+                <Grid Grid.Row="1" Margin="0,0,0,24">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- KPI 1: Total Sale -->
+                    <Border Grid.Column="0" Margin="0,0,8,0" Background="{DynamicResource ThemeSurface_161B33_Surface}" CornerRadius="14" Padding="20,18" Effect="{StaticResource CardShadow}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <DockPanel Grid.Row="0">
+                                <Border Background="{DynamicResource ThemeSurface_1E2850_Surface}" Width="36" Height="36" CornerRadius="8" Margin="0,0,10,0" DockPanel.Dock="Left">
+                                    <TextBlock Text="📋" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="TOTAL SALES" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource ThemeText_8896B8_Text}"/>
+                                    <TextBlock Text="Current season sessions" FontSize="11" Foreground="{DynamicResource ThemeText_556488_Text}"/>
+                                </StackPanel>
+                            </DockPanel>
+
+                            <TextBlock x:Name="TxtKpiTotalSales" Grid.Row="1" Text="0" FontSize="30" FontWeight="Bold" Foreground="{DynamicResource ThemeText_60A5FA_Text}" Margin="0,12,0,4"/>
+
+                            <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="Auction Sessions Completed" FontSize="11" Foreground="{DynamicResource ThemeText_8896B8_Text}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- KPI 2: Total Purchased Lot -->
+                    <Border Grid.Column="1" Margin="8,0,8,0" Background="{DynamicResource ThemeSurface_161B33_Surface}" CornerRadius="14" Padding="20,18" Effect="{StaticResource CardShadow}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <DockPanel Grid.Row="0">
+                                <Border Background="{DynamicResource ThemeSurface_2B1D4F_Surface}" Width="36" Height="36" CornerRadius="8" Margin="0,0,10,0" DockPanel.Dock="Left">
+                                    <TextBlock Text="📦" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="PURCHASED LOTS" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource ThemeText_8896B8_Text}"/>
+                                    <TextBlock Text="Catalog auction entries" FontSize="11" Foreground="{DynamicResource ThemeText_556488_Text}"/>
+                                </StackPanel>
+                            </DockPanel>
+
+                            <TextBlock x:Name="TxtKpiTotalLots" Grid.Row="1" Text="0" FontSize="30" FontWeight="Bold" Foreground="{DynamicResource ThemeText_A78BFA_Text}" Margin="0,12,0,4"/>
+
+                            <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="Total Lots Procured" FontSize="11" Foreground="{DynamicResource ThemeText_8896B8_Text}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- KPI 3: Total Weight (Kg) with % Growth Indicator -->
+                    <Border Grid.Column="2" Margin="8,0,8,0" Background="{DynamicResource ThemeSurface_161B33_Surface}" CornerRadius="14" Padding="20,18" Effect="{StaticResource CardShadow}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <DockPanel Grid.Row="0">
+                                <Border Background="{DynamicResource ThemeSurface_0C3428_Surface}" Width="36" Height="36" CornerRadius="8" Margin="0,0,10,0" DockPanel.Dock="Left">
+                                    <TextBlock Text="⚖️" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="TOTAL WEIGHT" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource ThemeText_8896B8_Text}"/>
+                                    <TextBlock Text="Volume procured in Kg" FontSize="11" Foreground="{DynamicResource ThemeText_556488_Text}"/>
+                                </StackPanel>
+                            </DockPanel>
+
+                            <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Bottom" Margin="0,12,0,4">
+                                <TextBlock x:Name="TxtKpiTotalWeight" Text="0.00" FontSize="30" FontWeight="Bold" Foreground="{DynamicResource ThemeText_34D399_Text}"/>
+                                <TextBlock Text=" Kg" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource ThemeText_6EE7B7_Text}" Margin="4,0,0,3" VerticalAlignment="Bottom"/>
+                            </StackPanel>
+
+                            <!-- Growth Indicator Badge vs Last Season -->
+                            <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                <Border x:Name="BadgeWeightGrowth" Background="{DynamicResource ThemeSurface_133324_Surface}" CornerRadius="8" Padding="6,2" Margin="0,0,6,0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock x:Name="TxtGrowthArrow" Text="▲" FontSize="10" Foreground="{DynamicResource ThemeText_10B981_Text}" Margin="0,0,3,0"/>
+                                        <TextBlock x:Name="TxtWeightGrowth" Text="+0.0%" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource ThemeText_34D399_Text}"/>
+                                    </StackPanel>
+                                </Border>
+                                <TextBlock Text="vs previous season" FontSize="11" Foreground="{DynamicResource ThemeText_7A87A8_Text}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- KPI 4: Total Value in BDT (৳) -->
+                    <Border Grid.Column="3" Margin="8,0,0,0" Background="{DynamicResource ThemeSurface_161B33_Surface}" CornerRadius="14" Padding="20,18" Effect="{StaticResource CardShadow}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <DockPanel Grid.Row="0">
+                                <Border Background="{DynamicResource ThemeSurface_332A15_Surface}" Width="36" Height="36" CornerRadius="8" Margin="0,0,10,0" DockPanel.Dock="Left">
+                                    <TextBlock Text="💰" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="TOTAL VALUE (BDT)" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource ThemeText_8896B8_Text}"/>
+                                    <TextBlock Text="Net season purchase spend" FontSize="11" Foreground="{DynamicResource ThemeText_556488_Text}"/>
+                                </StackPanel>
+                            </DockPanel>
+
+                            <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Bottom" Margin="0,12,0,4">
+                                <TextBlock Text="৳" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource ThemeText_FBBF24_Text}" Margin="0,0,2,2" VerticalAlignment="Bottom"/>
+                                <TextBlock x:Name="TxtKpiTotalValue" Text="0.00" FontSize="30" FontWeight="Bold" Foreground="{DynamicResource ThemeText_FBBF24_Text}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="Avg Price: " FontSize="11" Foreground="{DynamicResource ThemeText_8896B8_Text}"/>
+                                <TextBlock x:Name="TxtKpiAvgPrice" Text="৳0.00/Kg" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource ThemeText_60A5FA_Text}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+
+                <!-- ============================================================ -->
+                <!-- 3. Analytics & Geographic Visualizations                     -->
+                <!-- Left: Interactive World Map centered around Bangladesh       -->
+                <!-- Right: Broker Bar Chart + Brand Donut Chart                  -->
+                <!-- ============================================================ -->
+                <Grid Grid.Row="2" Margin="0,0,0,24">
+                    <Grid.ColumnDefinitions>
+                        <!-- Left Column: Interactive Map -->
+                        <ColumnDefinition Width="1.15*"/>
+                        <!-- Right Column: Analytics Charts -->
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 3.1 Left Column: Interactive World Map Centered on Bangladesh -->
+                    <Border Grid.Column="0" Margin="0,0,10,0" Background="{DynamicResource ThemeSurface_161B33_Surface}" CornerRadius="14" Padding="18" Effect="{StaticResource CardShadow}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="380"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Map Card Header with Controls -->
+                            <Grid Grid.Row="0" Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="🌍 Bangladesh Tea Map" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource ThemeText_FFFFFF_Text}"/>
+                                        <Border Background="{DynamicResource ThemeSurface_1C2E4A_Surface}" CornerRadius="6" Padding="6,2" Margin="8,0,0,0">
+                                            <TextBlock x:Name="TxtMapPinCount" Text="0 Gardens Mapped" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource ThemeText_60A5FA_Text}"/>
+                                        </Border>
+                                    </StackPanel>
+                                    <TextBlock Text="Bangladesh highlighted • Pinpointed tea garden locations • Drag to pan &amp; scroll to zoom" FontSize="11" Foreground="{DynamicResource ThemeText_7A87A8_Text}" Margin="0,2,0,0"/>
+                                </StackPanel>
+
+                                <!-- Map Controls (Zoom, Reset, Fullscreen) -->
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Button x:Name="BtnMapZoomIn" Content="＋" Style="{StaticResource MapToolButton}" Margin="0,0,4,0" ToolTip="Zoom In" Click="BtnMapZoomIn_Click"/>
+                                    <Button x:Name="BtnMapZoomOut" Content="－" Style="{StaticResource MapToolButton}" Margin="0,0,4,0" ToolTip="Zoom Out" Click="BtnMapZoomOut_Click"/>
+                                    <Button x:Name="BtnMapReset" Content="⟲" Style="{StaticResource MapToolButton}" Margin="0,0,8,0" ToolTip="Reset to Bangladesh Center" Click="BtnMapReset_Click"/>
+                                    <Button x:Name="BtnMapFullscreen" Content="⛶ Fullscreen" Style="{StaticResource PillButton}"
+                                            Background="{DynamicResource ThemeSurface_212A52_Surface}" Foreground="{DynamicResource ThemeText_93C5FD_Text}" ToolTip="Expand Map to Fullscreen" Click="BtnMapFullscreen_Click"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- Interactive Map Viewport -->
+                            <Border Grid.Row="1" Background="{DynamicResource ThemeSurface_0A1128_Surface}" CornerRadius="10" BorderBrush="{DynamicResource ThemeSurface_1F264A_Surface}" BorderThickness="1" ClipToBounds="True">
+                                <Grid x:Name="MapViewport" Cursor="Hand"
+                                      MouseLeftButtonDown="MapViewport_MouseLeftButtonDown"
+                                      MouseMove="MapViewport_MouseMove"
+                                      MouseLeftButtonUp="MapViewport_MouseLeftButtonUp"
+                                      MouseWheel="MapViewport_MouseWheel"
+                                      SizeChanged="MapViewport_SizeChanged">
+
+                                    <!-- Canvas Container with Pan Transform -->
+                                    <Canvas x:Name="MapTilesCanvas">
+                                        <Canvas.RenderTransform>
+                                            <TranslateTransform x:Name="MapPanTransform" X="0" Y="0"/>
+                                        </Canvas.RenderTransform>
+                                    </Canvas>
+
+                                    <!-- Garden Pinpoint Markers Canvas (Pans in sync) -->
+                                    <Canvas x:Name="MapPinsCanvas">
+                                        <Canvas.RenderTransform>
+                                            <TranslateTransform x:Name="MapPinsPanTransform" X="0" Y="0"/>
+                                        </Canvas.RenderTransform>
+                                    </Canvas>
+
+                                    <!-- Floating Center Compass/Target Badge (Discreet) -->
+                                    <Border HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10"
+                                            Background="#770D152B" CornerRadius="6" Padding="6,3" BorderBrush="{DynamicResource ThemeSurface_233256_Surface}" BorderThickness="1">
+                                        <TextBlock Text="📍 Bangladesh highlighted" FontSize="9" Foreground="{DynamicResource ThemeText_94A3B8_Text}"/>
+                                    </Border>
+
+                                    <!-- Floating Garden Inspection Card (Appears when pin is clicked) -->
+                                    <Border x:Name="SelectedGardenCard" Visibility="Collapsed"
+                                            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="14"
+                                            Background="{DynamicResource ThemeSurface_181E38_Surface}" BorderBrush="{DynamicResource ThemeSurface_3B4B7C_Surface}" BorderThickness="1"
+                                            CornerRadius="12" Padding="14,12" Width="280" Effect="{StaticResource CardShadow}">
+                                        <StackPanel>
+                                            <Grid Margin="0,0,0,6">
+                                                <TextBlock x:Name="TxtSelectedGardenName" Text="BARAOORA" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource ThemeText_FFFFFF_Text}"/>
+                                                <Button Content="✕" Width="20" Height="20" FontSize="11" Background="Transparent" Foreground="{DynamicResource ThemeText_94A3B8_Text}"
+                                                        BorderThickness="0" HorizontalAlignment="Right" Click="BtnCloseGardenCard_Click" Cursor="Hand"/>
+                                            </Grid>
+                                            <TextBlock x:Name="TxtSelectedGardenFull" Text="ভাড়াউড়া চা বাগান" FontSize="12" Foreground="{DynamicResource ThemeText_93C5FD_Text}" Margin="0,0,0,4"/>
+                                            <TextBlock x:Name="TxtSelectedGardenDistrict" Text="District: Moulvibazar (Sreemangal)" FontSize="11" Foreground="{DynamicResource ThemeText_94A3B8_Text}" Margin="0,0,0,8"/>
+
+                                            <Rectangle Height="1" Fill="{DynamicResource ThemeSurface_242E54_Surface}" Margin="0,0,0,8"/>
+
+                                            <Grid Margin="0,0,0,4">
+                                                <TextBlock Text="Purchased Lots:" FontSize="11" Foreground="{DynamicResource ThemeText_94A3B8_Text}"/>
+                                                <TextBlock x:Name="TxtSelectedGardenLots" Text="0 lots" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource ThemeText_F59E0B_Text}" HorizontalAlignment="Right"/>
+                                            </Grid>
+                                            <Grid Margin="0,0,0,4">
+                                                <TextBlock Text="Total Volume:" FontSize="11" Foreground="{DynamicResource ThemeText_94A3B8_Text}"/>
+                                                <TextBlock x:Name="TxtSelectedGardenKgs" Text="0.00 Kg" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource ThemeText_10B981_Text}" HorizontalAlignment="Right"/>
+                                            </Grid>
+                                            <Grid Margin="0,0,0,8">
+                                                <TextBlock Text="Total Value (BDT):" FontSize="11" Foreground="{DynamicResource ThemeText_94A3B8_Text}"/>
+                                                <TextBlock x:Name="TxtSelectedGardenValue" Text="৳0.00" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource ThemeText_FBBF24_Text}" HorizontalAlignment="Right"/>
+                                            </Grid>
+
+                                            <!-- Open Google Maps Button -->
+                                            <Button x:Name="BtnOpenGardenMapLink" Content="🌐 Open Location in Google Maps"
+                                                    Style="{StaticResource PillButton}" Background="#2563EB" Foreground="{DynamicResource ThemeText_FFFFFF_Text}"
+                                                    FontSize="11" Padding="8,6" Click="BtnOpenGardenMapLink_Click"/>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                            </Border>
+
+                            <!-- Map Region Quick Focus Pills -->
+                            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,10,0,0">
+                                <TextBlock Text="Focus Zone:" FontSize="11" Foreground="{DynamicResource ThemeText_7A87A8_Text}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <Button Content="🌏 World View" Style="{StaticResource PillButton}" Padding="8,4" Margin="0,0,4,0" FontSize="11" Click="BtnFocusWorld_Click"/>
+                                <Button Content="🇧🇩 All Bangladesh" Style="{StaticResource PillButton}" Padding="8,4" Margin="0,0,4,0" FontSize="11" Click="BtnFocusAll_Click"/>
+                                <Button Content="🍃 Sylhet &amp; Moulvibazar" Style="{StaticResource PillButton}" Padding="8,4" Margin="0,0,4,0" FontSize="11" Click="BtnFocusSylhet_Click"/>
+                                <Button Content="⚓ Chittagong" Style="{StaticResource PillButton}" Padding="8,4" Margin="0,0,4,0" FontSize="11" Click="BtnFocusChittagong_Click"/>
+                                <Button Content="⛰️ Panchagarh (North)" Style="{StaticResource PillButton}" Padding="8,4" Margin="0,0,4,0" FontSize="11" Click="BtnFocusNorth_Click"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- 3.2 Right Analytics Column: Broker Bar Chart + Brand Donut Chart -->
+                    <Grid Grid.Column="1" Margin="10,0,0,0">
+                        <Grid.RowDefinitions>
+                            <!-- Purchases by Broker Chart -->
+                            <RowDefinition Height="*"/>
+                            <!-- Purchases by Brand Chart -->
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Chart 1: Purchases by Broker Bar Chart -->
+                        <Border Grid.Row="0" Margin="0,0,0,10" Background="{DynamicResource ThemeSurface_161B33_Surface}" CornerRadius="14" Padding="18" Effect="{StaticResource CardShadow}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <DockPanel Grid.Row="0" Margin="0,0,0,10">
+                                    <StackPanel DockPanel.Dock="Left">
+                                        <TextBlock Text="📊 Purchases by Broker" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource ThemeText_FFFFFF_Text}"/>
+                                        <TextBlock Text="Procurement volume (Kg) breakdown across broker firms" FontSize="11" Foreground="{DynamicResource ThemeText_7A87A8_Text}"/>
+                                    </StackPanel>
+                                    <TextBlock x:Name="TxtBrokerTotalVolume" DockPanel.Dock="Right" Text="0 Kg" FontSize="12" FontWeight="Bold"
+                                               Foreground="{DynamicResource ThemeText_60A5FA_Text}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                </DockPanel>
+
+                                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                    <ItemsControl x:Name="ListBrokersChart">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="0,4,0,6">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                    </Grid.RowDefinitions>
+
+                                                    <!-- Labels & Metrics -->
+                                                    <Grid Grid.Row="0" Margin="0,0,0,4">
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                            <Border Background="{Binding ColorHex}" CornerRadius="4" Padding="6,1" Margin="0,0,8,0">
+                                                                <TextBlock Text="{Binding BrokerName}" FontWeight="Bold" FontSize="11" Foreground="{DynamicResource ThemeText_FFFFFF_Text}"/>
+                                                            </Border>
+                                                            <TextBlock Text="{Binding FullName}" FontSize="11" Foreground="{DynamicResource ThemeText_A2B4E6_Text}" MaxWidth="150" TextTrimming="CharacterEllipsis"/>
+                                                        </StackPanel>
+
+                                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                                            <TextBlock Text="{Binding TotalKgs, StringFormat='{}{0:N0} Kg'}" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource ThemeText_FFFFFF_Text}"/>
+                                                            <TextBlock Text="{Binding Percentage, StringFormat=' ({0:F1}%)'}" FontSize="11" Foreground="{DynamicResource ThemeText_7A87A8_Text}" Margin="0,0,8,0"/>
+                                                            <TextBlock Text="{Binding TotalValueBdt, StringFormat='৳{0:N0}'}" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource ThemeText_FBBF24_Text}"/>
+                                                        </StackPanel>
+                                                    </Grid>
+
+                                                    <!-- Progress Bar Track -->
+                                                    <Border Grid.Row="1" Height="8" Background="{DynamicResource ThemeSurface_0C1022_Surface}" CornerRadius="4" ClipToBounds="True">
+                                                        <Border Background="{Binding ColorHex}" HorizontalAlignment="Left" CornerRadius="4"
+                                                                Width="{Binding BarWidthPercent}"/>
+                                                    </Border>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </ScrollViewer>
+                            </Grid>
+                        </Border>
+
+                        <!-- Chart 2: Purchases by Brand Donut Chart -->
+                        <Border Grid.Row="1" Margin="0,10,0,0" Background="{DynamicResource ThemeSurface_161B33_Surface}" CornerRadius="14" Padding="18" Effect="{StaticResource CardShadow}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <DockPanel Grid.Row="0" Margin="0,0,0,10">
+                                    <StackPanel DockPanel.Dock="Left">
+                                        <TextBlock Text="🏷️ Purchases by Brand" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource ThemeText_FFFFFF_Text}"/>
+                                        <TextBlock Text="Procurement distribution across tea brands" FontSize="11" Foreground="{DynamicResource ThemeText_7A87A8_Text}"/>
+                                    </StackPanel>
+                                    <TextBlock x:Name="TxtBrandCountSummary" DockPanel.Dock="Right" Text="0 Brands" FontSize="12" FontWeight="Bold"
+                                               Foreground="{DynamicResource ThemeText_A78BFA_Text}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                </DockPanel>
+
+                                <Grid Grid.Row="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="190"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Donut Chart Canvas with Central Summary Cutout -->
+                                    <Grid Grid.Column="0" Width="180" Height="180" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <!-- Donut Slices Canvas -->
+                                        <Canvas x:Name="BrandDonutCanvas" Width="180" Height="180"/>
+
+                                        <!-- Center Hole Card -->
+                                        <Border Width="96" Height="96" Background="{DynamicResource ThemeSurface_161B33_Surface}" CornerRadius="48" BorderBrush="{DynamicResource ThemeSurface_232C52_Surface}" BorderThickness="2"
+                                                HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <TextBlock Text="TOTAL VOL" FontSize="8" FontWeight="Bold" Foreground="{DynamicResource ThemeText_8896B8_Text}" HorizontalAlignment="Center"/>
+                                                <TextBlock x:Name="TxtDonutCenterWeight" Text="0 Kg" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource ThemeText_34D399_Text}" HorizontalAlignment="Center"/>
+                                                <TextBlock x:Name="TxtDonutCenterBrands" Text="0 Brands" FontSize="9" Foreground="{DynamicResource ThemeText_94A3B8_Text}" HorizontalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
+
+                                    <!-- Brand Legend List -->
+                                    <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" Margin="10,0,0,0">
+                                        <ItemsControl x:Name="ListBrandsChart">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid Margin="0,3,0,4">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <Ellipse Grid.Column="0" Width="10" Height="10" Fill="{Binding ColorHex}" Margin="0,0,8,0" VerticalAlignment="Center"/>
+
+                                                        <TextBlock Grid.Column="1" Text="{Binding BrandName}" FontSize="11" FontWeight="SemiBold"
+                                                                   Foreground="{DynamicResource ThemeText_E2E8F0_Text}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+
+                                                        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                                            <TextBlock Text="{Binding TotalKgs, StringFormat='{}{0:N0} Kg'}" FontSize="11" Foreground="{DynamicResource ThemeText_94A3B8_Text}"/>
+                                                            <TextBlock Text="{Binding Percentage, StringFormat=' ({0:F1}%)'}" FontSize="10" Foreground="{DynamicResource ThemeText_60A5FA_Text}" Margin="4,0,0,0"/>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </ScrollViewer>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Grid>
+
+                <!-- ============================================================ -->
+                <!-- 4. Recent Sales Section Header & Comprehensive Filters       -->
+                <!-- ============================================================ -->
+                <Border Grid.Row="3" Background="{DynamicResource ThemeSurface_161B33_Surface}" CornerRadius="14" Padding="18,16" Margin="0,0,0,12" Effect="{StaticResource CardShadow}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Section Title -->
+                        <Grid Grid.Row="0" Margin="0,0,0,14">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="📋 Recent Sales Sessions" FontSize="17" FontWeight="Bold" Foreground="{DynamicResource ThemeText_FFFFFF_Text}"/>
+                                <Border Background="{DynamicResource ThemeSurface_1E2850_Surface}" CornerRadius="6" Padding="8,2" Margin="10,0,0,0">
+                                    <TextBlock x:Name="TxtRecentSalesCount" Text="0 Sales" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource ThemeText_60A5FA_Text}"/>
+                                </Border>
+                            </StackPanel>
+
+                            <TextBlock Text="Click any row or 'Inspect' to open the detailed sale overview drawer"
+                                       FontSize="12" Foreground="{DynamicResource ThemeText_7A87A8_Text}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        </Grid>
+
+                        <!-- Filter Controls Bar -->
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <!-- Quick Search -->
+                                <ColumnDefinition Width="1.5*"/>
+                                <!-- Auction No -->
+                                <ColumnDefinition Width="*"/>
+                                <!-- Broker -->
+                                <ColumnDefinition Width="1.1*"/>
+                                <!-- Garden -->
+                                <ColumnDefinition Width="1.1*"/>
+                                <!-- Date Range From -->
+                                <ColumnDefinition Width="*"/>
+                                <!-- Date Range To -->
+                                <ColumnDefinition Width="*"/>
+                                <!-- Action Buttons -->
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Quick Search -->
+                            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                <TextBlock Text="QUICK SEARCH" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource ThemeText_8896B8_Text}" Margin="0,0,0,4"/>
+                                <TextBox x:Name="TxtSearchRecent" Height="34" Background="{DynamicResource ThemeSurface_0C1022_Surface}" Foreground="{DynamicResource ThemeText_FFFFFF_Text}"
+                                         BorderBrush="{DynamicResource ThemeSurface_29335C_Surface}" BorderThickness="1" Padding="8,6" FontSize="12"
+                                         ToolTip="Search Sale No, Broker, Garden, Invoice..." TextChanged="FilterChanged"/>
+                            </StackPanel>
+
+                            <!-- Auction No -->
+                            <StackPanel Grid.Column="1" Margin="0,0,10,0">
+                                <TextBlock Text="AUCTION NO" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource ThemeText_8896B8_Text}" Margin="0,0,0,4"/>
+                                <TextBox x:Name="TxtSaleNoFilter" Height="34" Background="{DynamicResource ThemeSurface_0C1022_Surface}" Foreground="{DynamicResource ThemeText_FFFFFF_Text}"
+                                         BorderBrush="{DynamicResource ThemeSurface_29335C_Surface}" BorderThickness="1" Padding="8,6" FontSize="12"
+                                         ToolTip="Filter by specific Sale / Auction No" TextChanged="FilterChanged"/>
+                            </StackPanel>
+
+                            <!-- Broker Dropdown -->
+                            <StackPanel Grid.Column="2" Margin="0,0,10,0">
+                                <TextBlock Text="BROKER" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource ThemeText_8896B8_Text}" Margin="0,0,0,4"/>
+                                <ComboBox x:Name="CmbBrokerFilter" Height="34" SelectionChanged="FilterChanged"/>
+                            </StackPanel>
+
+                            <!-- Garden Dropdown -->
+                            <StackPanel Grid.Column="3" Margin="0,0,10,0">
+                                <TextBlock Text="GARDEN" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource ThemeText_8896B8_Text}" Margin="0,0,0,4"/>
+                                <ComboBox x:Name="CmbGardenFilter" Height="34" SelectionChanged="FilterChanged"/>
+                            </StackPanel>
+
+                            <!-- Date Range: From -->
+                            <StackPanel Grid.Column="4" Margin="0,0,10,0">
+                                <TextBlock Text="FROM DATE" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource ThemeText_8896B8_Text}" Margin="0,0,0,4"/>
+                                <DatePicker x:Name="DtpFromDate" Height="34" SelectedDateChanged="FilterChanged"/>
+                            </StackPanel>
+
+                            <!-- Date Range: To -->
+                            <StackPanel Grid.Column="5" Margin="0,0,10,0">
+                                <TextBlock Text="TO DATE" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource ThemeText_8896B8_Text}" Margin="0,0,0,4"/>
+                                <DatePicker x:Name="DtpToDate" Height="34" SelectedDateChanged="FilterChanged"/>
+                            </StackPanel>
+
+                            <!-- Reset Button -->
+                            <StackPanel Grid.Column="6" VerticalAlignment="Bottom">
+                                <Button x:Name="BtnResetFilters" Content="⟳ Reset"
+                                        Style="{StaticResource PillButton}" Height="34" Padding="14,0"
+                                        Background="{DynamicResource ThemeSurface_29335C_Surface}" Click="BtnResetFilters_Click"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <!-- ============================================================ -->
+                <!-- 5. Recent Sales DataGrid                                     -->
+                <!-- Columns: auction no, date, Total purchase or entries,        -->
+                <!-- Total Bags, Total Weight (Kg), Total Value (BDT), Avg price  -->
+                <!-- Actions: Inspect Drawer / Row selection                      -->
+                <!-- ============================================================ -->
+                <Border Grid.Row="4" Background="{DynamicResource ThemeSurface_161B33_Surface}" CornerRadius="14" Padding="1" Effect="{StaticResource CardShadow}">
+                    <DataGrid ui:TableLayout.Enabled="True" x:Name="GridRecentSales" AutoGenerateColumns="False" IsReadOnly="True"
+                              Background="{DynamicResource ThemeSurface_161B33_Surface}" Foreground="{DynamicResource ThemeText_D0D8F0_Text}" BorderThickness="1" BorderBrush="{DynamicResource TableBorder}"
+                              RowBackground="{DynamicResource ThemeSurface_1B213E_Surface}" AlternatingRowBackground="{DynamicResource ThemeSurface_14182E_Surface}"
+                              GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource ThemeSurface_222B52_Surface}"
+                              HeadersVisibility="Column" SelectionMode="Single"
+                              CanUserReorderColumns="False" CanUserResizeRows="False"
+                              FontSize="13" MaxHeight="420"
+                              MouseDoubleClick="GridRecentSales_MouseDoubleClick"
+                              SelectionChanged="GridRecentSales_SelectionChanged">
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="{DynamicResource ThemeSurface_0F142A_Surface}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource ThemeText_93C5FD_Text}"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Setter Property="Padding" Value="14,10"/>
+                                <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource ThemeSurface_222B52_Surface}"/>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+
+                        <DataGrid.Columns>
+                            <!-- Auction No -->
+                            <DataGridTextColumn Header="Auction No" Binding="{Binding SaleNo}" Width="120" FontWeight="Bold"/>
+
+                            <!-- Date -->
+                            <DataGridTextColumn Header="Sale Date" Binding="{ui:PreferredDate SaleDate}" Width="110"/>
+
+                            <!-- Total purchase or entries -->
+                            <DataGridTextColumn Header="Entries / Lots" Binding="{Binding TotalLots, StringFormat='{}{0:N0} lots'}" Width="115"/>
+
+                            <!-- Total Bags -->
+                            <DataGridTextColumn Header="Total Bags" Binding="{Binding TotalBags, StringFormat='{}{0:N0}'}" Width="100"/>
+
+                            <!-- Total Weight (Kg) -->
+                            <DataGridTextColumn Header="Total Weight (Kg)" Binding="{Binding TotalKgs, StringFormat='{}{0:N2} Kg'}" Width="140" FontWeight="SemiBold"/>
+
+                            <!-- Total Value (BDT) -->
+                            <DataGridTextColumn Header="Total Value (BDT)" Binding="{Binding TotalValueBdt, StringFormat='৳{0:N2}'}" Width="150" FontWeight="Bold" Foreground="{DynamicResource ThemeText_FBBF24_Text}"/>
+
+                            <!-- Average Price per Kg -->
+                            <DataGridTextColumn Header="Avg Price/Kg" Binding="{Binding AvgPricePerKg, StringFormat='৳{0:N2}'}" Width="120" Foreground="{DynamicResource ThemeText_34D399_Text}"/>
+
+                            <!-- Actions: Inspection Drawer -->
+                            <DataGridTemplateColumn Header="Actions" Width="*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <Button Content="Inspect 🔍" Style="{StaticResource PillButton}"
+                                                    Background="#2563EB" Foreground="{DynamicResource ThemeText_FFFFFF_Text}" Padding="10,4" FontSize="11"
+                                                    Click="BtnInspectSale_Click" Tag="{Binding}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+            </Grid>
+        </ScrollViewer>
+
+        <!-- ============================================================ -->
+        <!-- 6. Detail Drawer: Sale Inspection & Quick Overview           -->
+        <!-- Slides out or overlays right side when a sale is inspected   -->
+        <!-- ============================================================ -->
+        <Grid x:Name="SaleDetailDrawerOverlay" Visibility="Collapsed" Background="#77000000"
+              MouseDown="DrawerBackdrop_MouseDown">
+            <Border HorizontalAlignment="Right" Width="680" Background="{DynamicResource ThemeSurface_14182E_Surface}" BorderBrush="{DynamicResource ThemeSurface_2D3A68_Surface}" BorderThickness="1,0,0,0">
+                <Border.Effect>
+                    <DropShadowEffect Color="#000" BlurRadius="30" ShadowDepth="0" Opacity="0.8"/>
+                </Border.Effect>
+
+                <Grid Margin="24">
+                    <Grid.RowDefinitions>
+                        <!-- Header -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Sale KPI Overview -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Split Summaries (Broker & Brand in this sale) -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Detailed Entries DataGrid -->
+                        <RowDefinition Height="*"/>
+                        <!-- Footer Action Bar -->
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Drawer Header -->
+                    <Grid Grid.Row="0" Margin="0,0,0,16">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="Auction Sale No: " FontSize="20" FontWeight="Bold" Foreground="{DynamicResource ThemeText_FFFFFF_Text}"/>
+                                <TextBlock x:Name="TxtDrawerSaleNo" Text="01" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource ThemeText_60A5FA_Text}"/>
+                                <Border Background="{DynamicResource ThemeSurface_1C3829_Surface}" CornerRadius="6" Padding="8,2" Margin="10,0,0,0" VerticalAlignment="Center">
+                                    <TextBlock x:Name="TxtDrawerSaleDate" Text="12/05/2026" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource ThemeText_34D399_Text}"/>
+                                </Border>
+                            </StackPanel>
+                            <TextBlock Text="Detailed inspection of lots procured in this auction session" FontSize="12" Foreground="{DynamicResource ThemeText_8896B8_Text}" Margin="0,2,0,0"/>
+                        </StackPanel>
+
+                        <Button Content="✕" Width="30" Height="30" FontSize="14" Background="{DynamicResource ThemeSurface_232C52_Surface}" Foreground="{DynamicResource ThemeText_CBD5E1_Text}"
+                                BorderThickness="0" HorizontalAlignment="Right" VerticalAlignment="Top"
+                                Click="BtnCloseDrawer_Click" Cursor="Hand">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="15">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </Grid>
+
+                    <!-- Sale KPI Summary Row -->
+                    <UniformGrid Grid.Row="1" Columns="5" Margin="0,0,0,16">
+                        <Border Background="{DynamicResource ThemeSurface_1C2242_Surface}" CornerRadius="8" Padding="10" Margin="0,0,6,0">
+                            <StackPanel>
+                                <TextBlock Text="LOTS" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource ThemeText_8896B8_Text}"/>
+                                <TextBlock x:Name="TxtDrawerLots" Text="0" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource ThemeText_A78BFA_Text}"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Background="{DynamicResource ThemeSurface_1C2242_Surface}" CornerRadius="8" Padding="10" Margin="3,0,3,0">
+                            <StackPanel>
+                                <TextBlock Text="BAGS" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource ThemeText_8896B8_Text}"/>
+                                <TextBlock x:Name="TxtDrawerBags" Text="0" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource ThemeText_FFFFFF_Text}"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Background="{DynamicResource ThemeSurface_1C2242_Surface}" CornerRadius="8" Padding="10" Margin="3,0,3,0">
+                            <StackPanel>
+                                <TextBlock Text="TOTAL KG" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource ThemeText_8896B8_Text}"/>
+                                <TextBlock x:Name="TxtDrawerWeight" Text="0.00" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource ThemeText_34D399_Text}"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Background="{DynamicResource ThemeSurface_1C2242_Surface}" CornerRadius="8" Padding="10" Margin="3,0,3,0">
+                            <StackPanel>
+                                <TextBlock Text="TOTAL VALUE" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource ThemeText_8896B8_Text}"/>
+                                <TextBlock x:Name="TxtDrawerValue" Text="৳0.00" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource ThemeText_FBBF24_Text}"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Background="{DynamicResource ThemeSurface_1C2242_Surface}" CornerRadius="8" Padding="10" Margin="6,0,0,0">
+                            <StackPanel>
+                                <TextBlock Text="AVG PRICE/KG" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource ThemeText_8896B8_Text}"/>
+                                <TextBlock x:Name="TxtDrawerAvgPrice" Text="৳0.00" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource ThemeText_60A5FA_Text}"/>
+                            </StackPanel>
+                        </Border>
+                    </UniformGrid>
+
+                    <!-- Sale Sub-Distributions (Brokers & Brands) -->
+                    <Grid Grid.Row="2" Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Broker Breakdown in this sale -->
+                        <Border Grid.Column="0" Margin="0,0,6,0" Background="{DynamicResource ThemeSurface_161B33_Surface}" CornerRadius="8" Padding="10">
+                            <StackPanel>
+                                <TextBlock Text="BROKER DISTRIBUTION" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource ThemeText_8896B8_Text}" Margin="0,0,0,6"/>
+                                <ItemsControl x:Name="ListDrawerBrokers">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,2">
+                                                <TextBlock Text="{Binding BrokerName}" FontSize="11" Foreground="{DynamicResource ThemeText_A2B4E6_Text}"/>
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                                    <TextBlock Text="{Binding TotalKgs, StringFormat='{}{0:N0} Kg'}" FontSize="11" Foreground="{DynamicResource ThemeText_FFFFFF_Text}"/>
+                                                    <TextBlock Text="{Binding Percentage, StringFormat=' ({0:F0}%)'}" FontSize="10" Foreground="{DynamicResource ThemeText_60A5FA_Text}" Margin="4,0,0,0"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Brand Breakdown in this sale -->
+                        <Border Grid.Column="1" Margin="6,0,0,0" Background="{DynamicResource ThemeSurface_161B33_Surface}" CornerRadius="8" Padding="10">
+                            <StackPanel>
+                                <TextBlock Text="BRAND DISTRIBUTION" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource ThemeText_8896B8_Text}" Margin="0,0,0,6"/>
+                                <ItemsControl x:Name="ListDrawerBrands">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,2">
+                                                <TextBlock Text="{Binding BrandName}" FontSize="11" Foreground="{DynamicResource ThemeText_A2B4E6_Text}"/>
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                                    <TextBlock Text="{Binding TotalKgs, StringFormat='{}{0:N0} Kg'}" FontSize="11" Foreground="{DynamicResource ThemeText_FFFFFF_Text}"/>
+                                                    <TextBlock Text="{Binding Percentage, StringFormat=' ({0:F0}%)'}" FontSize="10" Foreground="{DynamicResource ThemeText_A78BFA_Text}" Margin="4,0,0,0"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <!-- Detailed Entries Table -->
+                    <Border Grid.Row="3" Background="{DynamicResource ThemeSurface_161B33_Surface}" CornerRadius="8" Padding="1" Margin="0,0,0,16">
+                        <DataGrid ui:TableLayout.Enabled="True" x:Name="GridDrawerEntries" AutoGenerateColumns="False" IsReadOnly="True"
+                                  Background="{DynamicResource ThemeSurface_161B33_Surface}" Foreground="{DynamicResource ThemeText_D0D8F0_Text}" BorderThickness="1" BorderBrush="{DynamicResource TableBorder}"
+                                  RowBackground="{DynamicResource ThemeSurface_1B213E_Surface}" AlternatingRowBackground="{DynamicResource ThemeSurface_14182E_Surface}"
+                                  GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource ThemeSurface_222B52_Surface}"
+                                  HeadersVisibility="Column" SelectionMode="Single"
+                                  FontSize="12" VerticalScrollBarVisibility="Auto">
+                            <DataGrid.ColumnHeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="{DynamicResource ThemeSurface_0F142A_Surface}"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource ThemeText_93C5FD_Text}"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="Padding" Value="8,6"/>
+                                    <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource ThemeSurface_222B52_Surface}"/>
+                                </Style>
+                            </DataGrid.ColumnHeaderStyle>
+
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Lot No" Binding="{Binding LotNo}" Width="75" FontWeight="Bold"/>
+                                <DataGridTextColumn Header="Garden" Binding="{Binding GardenName}" Width="120"/>
+                                <DataGridTextColumn Header="Grade" Binding="{Binding GradeName}" Width="80"/>
+                                <DataGridTextColumn Header="Bags" Binding="{Binding NumberOfBags}" Width="55"/>
+                                <DataGridTextColumn Header="KGs" Binding="{Binding TotalKgs, StringFormat='{}{0:N2}'}" Width="80"/>
+                                <DataGridTextColumn Header="Price/Kg" Binding="{Binding PricePerKg, StringFormat='৳{0:N2}'}" Width="80" Foreground="{DynamicResource ThemeText_34D399_Text}"/>
+                                <DataGridTextColumn Header="Value" Binding="{Binding Value, StringFormat='৳{0:N2}'}" Width="95" Foreground="{DynamicResource ThemeText_FBBF24_Text}"/>
+                                <DataGridTextColumn Header="Broker" Binding="{Binding BrokerName}" Width="80"/>
+                                <DataGridTextColumn Header="Brand" Binding="{Binding BrandName}" Width="80"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Border>
+
+                    <!-- Drawer Footer Actions -->
+                    <DockPanel Grid.Row="4">
+                        <Button x:Name="BtnDrawerEditSale" Content="✏️ Open Sale in Editor"
+                                Style="{StaticResource PillButton}" Background="#2563EB" Foreground="{DynamicResource ThemeText_FFFFFF_Text}"
+                                Padding="16,8" FontSize="13" DockPanel.Dock="Left" Click="BtnDrawerEditSale_Click"/>
+
+                        <Button Content="Close Drawer" Style="{StaticResource PillButton}"
+                                Background="{DynamicResource ThemeSurface_242E54_Surface}" Padding="16,8" FontSize="13" DockPanel.Dock="Right"
+                                HorizontalAlignment="Right" Click="BtnCloseDrawer_Click"/>
+                    </DockPanel>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- ============================================================ -->
+        <!-- 7. Full-Screen Map Overlay Dialog                            -->
+        <!-- ============================================================ -->
+        <Grid x:Name="MapFullscreenOverlay" Visibility="Collapsed" Background="{DynamicResource ThemeSurface_0A0E1D_Surface}">
+            <Grid Margin="24">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Fullscreen Header -->
+                <Grid Grid.Row="0" Margin="0,0,0,14">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="🌍 Global &amp; Bangladesh Tea Gardens — Geospatial Overview" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource ThemeText_FFFFFF_Text}"/>
+                        <Border Background="{DynamicResource ThemeSurface_1E2850_Surface}" CornerRadius="6" Padding="8,2" Margin="12,0,0,0">
+                            <TextBlock x:Name="TxtFsMapStats" Text="170 Gardens" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource ThemeText_60A5FA_Text}"/>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <Button x:Name="BtnFsZoomIn" Content="＋" Style="{StaticResource MapToolButton}" Margin="0,0,4,0" ToolTip="Zoom In" Click="BtnFsZoomIn_Click"/>
+                        <Button x:Name="BtnFsZoomOut" Content="－" Style="{StaticResource MapToolButton}" Margin="0,0,4,0" ToolTip="Zoom Out" Click="BtnFsZoomOut_Click"/>
+                        <Button x:Name="BtnFsReset" Content="⟲ Reset" Style="{StaticResource PillButton}" Margin="0,0,8,0" Click="BtnFsReset_Click"/>
+                        <Button x:Name="BtnCloseFullscreen" Content="✕ Exit Fullscreen" Style="{StaticResource PillButton}"
+                                Background="#E11D48" Foreground="{DynamicResource ThemeText_FFFFFF_Text}" FontWeight="Bold" Click="BtnCloseFullscreen_Click"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Fullscreen Viewport Canvas -->
+                <Border Grid.Row="1" Background="{DynamicResource ThemeSurface_0A1128_Surface}" CornerRadius="12" BorderBrush="{DynamicResource ThemeSurface_1C2442_Surface}" BorderThickness="1" ClipToBounds="True">
+                    <Grid x:Name="FsMapViewport" Cursor="Hand"
+                          MouseLeftButtonDown="FsMapViewport_MouseLeftButtonDown"
+                          MouseMove="FsMapViewport_MouseMove"
+                          MouseLeftButtonUp="FsMapViewport_MouseLeftButtonUp"
+                          MouseWheel="FsMapViewport_MouseWheel"
+                          SizeChanged="FsMapViewport_SizeChanged">
+
+                        <!-- Fullscreen Tile Layer -->
+                        <Canvas x:Name="FsMapTilesCanvas">
+                            <Canvas.RenderTransform>
+                                <TranslateTransform x:Name="FsMapPanTransform" X="0" Y="0"/>
+                            </Canvas.RenderTransform>
+                        </Canvas>
+
+                        <!-- Fullscreen Pins Layer -->
+                        <Canvas x:Name="FsMapPinsCanvas">
+                            <Canvas.RenderTransform>
+                                <TranslateTransform x:Name="FsMapPinsPanTransform" X="0" Y="0"/>
+                            </Canvas.RenderTransform>
+                        </Canvas>
+
+                        <!-- Floating Garden Card for Fullscreen -->
+                        <Border x:Name="FsSelectedGardenCard" Visibility="Collapsed"
+                                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24"
+                                Background="{DynamicResource ThemeSurface_181E38_Surface}" BorderBrush="{DynamicResource ThemeSurface_3B4B7C_Surface}" BorderThickness="1"
+                                CornerRadius="14" Padding="18,16" Width="310" Effect="{StaticResource CardShadow}">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,8">
+                                    <TextBlock x:Name="TxtFsSelectedGardenName" Text="BARAOORA" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource ThemeText_FFFFFF_Text}"/>
+                                    <Button Content="✕" Width="24" Height="24" FontSize="12" Background="Transparent" Foreground="{DynamicResource ThemeText_94A3B8_Text}"
+                                            BorderThickness="0" HorizontalAlignment="Right" Click="BtnCloseFsGardenCard_Click" Cursor="Hand"/>
+                                </Grid>
+                                <TextBlock x:Name="TxtFsSelectedGardenFull" Text="ভাড়াউড়া চা বাগান" FontSize="13" Foreground="{DynamicResource ThemeText_93C5FD_Text}" Margin="0,0,0,4"/>
+                                <TextBlock x:Name="TxtFsSelectedGardenDistrict" Text="District: Moulvibazar (Sreemangal)" FontSize="12" Foreground="{DynamicResource ThemeText_94A3B8_Text}" Margin="0,0,0,10"/>
+
+                                <Rectangle Height="1" Fill="{DynamicResource ThemeSurface_242E54_Surface}" Margin="0,0,0,10"/>
+
+                                <Grid Margin="0,0,0,6">
+                                    <TextBlock Text="Purchased Lots:" FontSize="12" Foreground="{DynamicResource ThemeText_94A3B8_Text}"/>
+                                    <TextBlock x:Name="TxtFsSelectedGardenLots" Text="0 lots" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource ThemeText_F59E0B_Text}" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Grid Margin="0,0,0,6">
+                                    <TextBlock Text="Total Volume:" FontSize="12" Foreground="{DynamicResource ThemeText_94A3B8_Text}"/>
+                                    <TextBlock x:Name="TxtFsSelectedGardenKgs" Text="0.00 Kg" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource ThemeText_10B981_Text}" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Grid Margin="0,0,0,12">
+                                    <TextBlock Text="Total Value (BDT):" FontSize="12" Foreground="{DynamicResource ThemeText_94A3B8_Text}"/>
+                                    <TextBlock x:Name="TxtFsSelectedGardenValue" Text="৳0.00" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource ThemeText_FBBF24_Text}" HorizontalAlignment="Right"/>
+                                </Grid>
+
+                                <Button x:Name="BtnFsOpenGardenMapLink" Content="🌐 Open Location in Google Maps"
+                                        Style="{StaticResource PillButton}" Background="#2563EB" Foreground="{DynamicResource ThemeText_FFFFFF_Text}"
+                                        FontSize="12" Padding="12,8" Click="BtnFsOpenGardenMapLink_Click"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- Fullscreen Region Filter Buttons -->
+                <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,12,0,0">
+                    <TextBlock Text="Focus Zone:" FontSize="12" Foreground="{DynamicResource ThemeText_7A87A8_Text}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <Button Content="🌏 World View" Style="{StaticResource PillButton}" Margin="0,0,6,0" Click="BtnFsFocusWorld_Click"/>
+                    <Button Content="🇧🇩 All Bangladesh" Style="{StaticResource PillButton}" Margin="0,0,6,0" Click="BtnFsFocusAll_Click"/>
+                    <Button Content="🍃 Sylhet &amp; Moulvibazar Hub" Style="{StaticResource PillButton}" Margin="0,0,6,0" Click="BtnFsFocusSylhet_Click"/>
+                    <Button Content="⚓ Chittagong Hub" Style="{StaticResource PillButton}" Margin="0,0,6,0" Click="BtnFsFocusChittagong_Click"/>
+                    <Button Content="⛰️ Panchagarh (North Hub)" Style="{StaticResource PillButton}" Margin="0,0,6,0" Click="BtnFsFocusNorth_Click"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

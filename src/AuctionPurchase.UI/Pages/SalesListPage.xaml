@@ -1,0 +1,127 @@
+<Page x:Class="AuctionPurchase.UI.Pages.SalesListPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="clr-namespace:AuctionPurchase.UI.Services"
+      Background="{DynamicResource ThemeSurface_1A1A2E_Surface}" FontFamily="Segoe UI">
+    <Page.Resources>
+        <Style x:Key="FormComboInput" TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+            <Setter Property="Margin" Value="0,5,0,0"/>
+            <Setter Property="MinHeight" Value="36"/>
+        </Style>
+        <Style x:Key="FormTextInput" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Margin" Value="0,5,0,0"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeText_FFFFFF_Text}"/>
+        </Style>
+        <Style x:Key="ModalButton" TargetType="Button">
+            <Setter Property="Height" Value="38"/><Setter Property="Padding" Value="16,0"/>
+            <Setter Property="Margin" Value="8,0,0,0"/><Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="White"/><Setter Property="FontSize" Value="13"/><Setter Property="Cursor" Value="Hand"/>
+        </Style>
+    </Page.Resources>
+    <Grid Margin="24">
+        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="0,0,0,16">
+            <TextBlock Text="Sales List" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource ThemeText_FFFFFF_Text}"/>
+            <TextBlock Text="Each row is one auction lot. Use Action to edit or delete that lot." Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="13" Margin="0,4,0,0"/>
+        </StackPanel>
+
+        <Border Grid.Row="1" Background="{DynamicResource ThemeSurface_16213E_Surface}" CornerRadius="10" Padding="16,12" Margin="0,0,0,12">
+            <Grid>
+                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                <TextBox x:Name="TxtSearch" Grid.Column="0" Background="{DynamicResource ThemeSurface_2A2A4A_Surface}" Foreground="{DynamicResource ThemeText_FFFFFF_Text}" BorderBrush="{DynamicResource ThemeSurface_3A3A5C_Surface}" Padding="10,8" FontSize="13" CaretBrush="{DynamicResource ThemeText_FFFFFF_Text}" Margin="0,0,12,0" ToolTip="Search Sale No" KeyUp="TxtSearch_KeyUp">
+                    <TextBox.Template>
+                        <ControlTemplate TargetType="TextBox">
+                            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="8">
+                                <ScrollViewer x:Name="PART_ContentHost"  VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </TextBox.Template>
+                </TextBox>
+                <TextBlock Grid.Column="1" Text="From:" Foreground="{DynamicResource ThemeText_8890AB_Text}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <DatePicker x:Name="DtpFrom" Grid.Column="2" Width="130" Margin="0,0,12,0" SelectedDateChanged="FilterChanged"/>
+                <TextBlock Grid.Column="3" Text="To:" Foreground="{DynamicResource ThemeText_8890AB_Text}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <DatePicker x:Name="DtpTo" Grid.Column="4" Width="130" SelectedDateChanged="FilterChanged"/>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="2" Background="{DynamicResource ThemeSurface_16213E_Surface}" CornerRadius="12" Padding="1,1,1,50">
+            <DataGrid ui:TableLayout.Enabled="True" x:Name="GridLots" AutoGenerateColumns="False" IsReadOnly="True" Background="{DynamicResource ThemeSurface_16213E_Surface}" Foreground="{DynamicResource ThemeText_D0D8F0_Text}" BorderThickness="1" BorderBrush="{DynamicResource TableBorder}"
+                      RowBackground="{DynamicResource ThemeSurface_1E2748_Surface}" AlternatingRowBackground="{DynamicResource ThemeSurface_16213E_Surface}" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource ThemeSurface_1A2540_Surface}"
+                      HeadersVisibility="Column" CanUserReorderColumns="False" CanUserResizeRows="False" FontSize="12"
+                      HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Sale No" Binding="{Binding SaleNo}" Width="90"/>
+                    <DataGridTextColumn Header="Date" Binding="{ui:PreferredDate SaleDate}" Width="95"/>
+                    <DataGridTextColumn Header="Brand" Binding="{Binding BrandName}" Width="120"/>
+                    <DataGridTextColumn Header="Broker" Binding="{Binding BrokerName}" Width="105"/>
+                    <DataGridTextColumn Header="Lot No" Binding="{Binding LotNo}" Width="80"/>
+                    <DataGridTextColumn Header="Garden" Binding="{Binding GardenName}" Width="125"/>
+                    <DataGridTextColumn Header="Account" Binding="{Binding AccountName}" Width="125"/>
+                    <DataGridTextColumn Header="Invoice" Binding="{Binding InvoiceNo}" Width="90"/>
+                    <DataGridTextColumn Header="Grade" Binding="{Binding GradeName}" Width="80"/>
+                    <DataGridTextColumn Header="Bags" Binding="{Binding NumberOfBags}" Width="60"/>
+                    <DataGridTextColumn Header="KGs" Binding="{Binding TotalKgs, StringFormat=N2}" Width="85"/>
+                    <DataGridTextColumn Header="Price/KG" Binding="{Binding PricePerKg, StringFormat=N2}" Width="90"/>
+                    <DataGridTextColumn Header="Value" Binding="{Binding Value, StringFormat=N2}" Width="105"/>
+                    <DataGridTextColumn Header="Shed" Binding="{Binding ShedName}" Width="90"/>
+                    <DataGridTextColumn Header="Blend" Binding="{Binding BlendName}" Width="90"/>
+                    <DataGridTemplateColumn Header="Action" Width="130">
+                        <DataGridTemplateColumn.CellTemplate><DataTemplate><StackPanel Orientation="Horizontal">
+                            <Button Content="Edit" Background="Transparent" Foreground="{DynamicResource ThemeText_75A7FF_Text}" BorderThickness="0" FontWeight="Bold" Cursor="Hand" Click="BtnEditLot_Click" Tag="{Binding}"/>
+                            <Button Content="Delete" Background="Transparent" Foreground="{DynamicResource ThemeText_FF7182_Text}" BorderThickness="0" FontWeight="Bold" Cursor="Hand" Click="BtnDeleteLot_Click" Tag="{Binding}"/>
+                        </StackPanel></DataTemplate></DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+
+        <Grid Grid.Row="2" Margin="0,0,0,10" VerticalAlignment="Bottom">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="BtnPrevPage" Content="Previous" Style="{StaticResource ModalButton}" Background="{DynamicResource ThemeSurface_2D2D4E_Surface}" Margin="0,0,10,0" Click="BtnPrevPage_Click"/>
+                <TextBlock x:Name="TxtPageInfo" Text="Page 1 of 1" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="{DynamicResource ThemeText_FFFFFF_Text}"/>
+                <Button x:Name="BtnNextPage" Content="Next" Style="{StaticResource ModalButton}" Background="#4361EE" Click="BtnNextPage_Click"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid x:Name="EditOverlay" Grid.RowSpan="3" Background="#99000000" Visibility="Collapsed">
+            <Border Background="{DynamicResource ThemeSurface_1A1A2E_Surface}" CornerRadius="16" Padding="28" MaxWidth="960" MaxHeight="680" Margin="40">
+                <Border.Effect><DropShadowEffect Color="Black" BlurRadius="24" Opacity="0.6" ShadowDepth="5"/></Border.Effect>
+                <Grid>
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Margin="0,0,0,18">
+                        <StackPanel><TextBlock Text="Edit Auction Lot" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource ThemeText_FFFFFF_Text}"/>
+                            <TextBlock Text="Update the sale information and every auction-lot field, then save." Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="13" Margin="0,4,0,0"/></StackPanel>
+                        <Button Content="×" HorizontalAlignment="Right" VerticalAlignment="Top" Width="32" Height="32" FontSize="22" Background="Transparent" Foreground="{DynamicResource ThemeText_B0B8D1_Text}" BorderThickness="0" Click="BtnCloseEditPopup_Click"/>
+                    </Grid>
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <Grid Margin="0,0,8,0">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,14,16"><TextBlock Text="SALE NO *" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="11" FontWeight="Bold"/><TextBox x:Name="TxtEditSaleNo" Style="{StaticResource FormTextInput}"/></StackPanel>
+                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,0,14,16"><TextBlock Text="SALE DATE *" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="11" FontWeight="Bold"/><DatePicker x:Name="DtpEditSaleDate" Height="34" Margin="0,5,0,0" Foreground="{DynamicResource ThemeText_FFFFFF_Text}"/></StackPanel>
+                            <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,16"><TextBlock Text="LOT NO *" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="11" FontWeight="Bold"/><TextBox x:Name="TxtLotNo" Style="{StaticResource FormTextInput}"/></StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,14,16"><TextBlock Text="BRAND *" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="11" FontWeight="Bold"/><ComboBox x:Name="CmbBrand" DisplayMemberPath="Name" Style="{StaticResource FormComboInput}"/></StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,0,14,16"><TextBlock Text="BROKER *" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="11" FontWeight="Bold"/><ComboBox x:Name="CmbBroker" DisplayMemberPath="Name" Style="{StaticResource FormComboInput}"/></StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="2" Margin="0,0,0,16"><TextBlock Text="GARDEN" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="11" FontWeight="Bold"/><ComboBox x:Name="CmbGarden" DisplayMemberPath="Name" Style="{StaticResource FormComboInput}"/></StackPanel>
+                            <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,14,16"><TextBlock Text="INVOICE" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="11" FontWeight="Bold"/><TextBox x:Name="TxtInvoiceNo" Style="{StaticResource FormTextInput}"/></StackPanel>
+                            <StackPanel Grid.Row="2" Grid.Column="1" Margin="0,0,14,16"><TextBlock Text="GRADE" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="11" FontWeight="Bold"/><ComboBox x:Name="CmbGrade" DisplayMemberPath="Name" Style="{StaticResource FormComboInput}"/></StackPanel>
+                            <StackPanel Grid.Row="2" Grid.Column="2" Margin="0,0,0,16"><TextBlock Text="BAGS *" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="11" FontWeight="Bold"/><TextBox x:Name="TxtBags" Style="{StaticResource FormTextInput}"/></StackPanel>
+                            <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,0,14,0"><TextBlock Text="KGS *" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="11" FontWeight="Bold"/><TextBox x:Name="TxtKgs" Style="{StaticResource FormTextInput}" TextChanged="NumericFieldChanged"/></StackPanel>
+                            <StackPanel Grid.Row="3" Grid.Column="1" Margin="0,0,14,0"><TextBlock Text="PRICE / KG *" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="11" FontWeight="Bold"/><TextBox x:Name="TxtPrice" Style="{StaticResource FormTextInput}" TextChanged="NumericFieldChanged"/></StackPanel>
+                            <StackPanel Grid.Row="3" Grid.Column="2"><TextBlock Text="VALUE" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="11" FontWeight="Bold"/><TextBox x:Name="TxtValue" Style="{StaticResource FormTextInput}" IsReadOnly="True" Background="{DynamicResource ThemeSurface_242B45_Surface}" Foreground="{DynamicResource ThemeText_F7A400_Text}"/></StackPanel>
+                            <StackPanel Grid.Row="4" Grid.Column="0" Margin="0,16,14,0"><TextBlock Text="SHED" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="11" FontWeight="Bold"/><ComboBox x:Name="CmbShed" DisplayMemberPath="Name" Style="{StaticResource FormComboInput}"/></StackPanel>
+                            <StackPanel Grid.Row="4" Grid.Column="1" Margin="0,16,14,0"><TextBlock Text="BLEND" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="11" FontWeight="Bold"/><ComboBox x:Name="CmbBlend" DisplayMemberPath="Name" Style="{StaticResource FormComboInput}"/></StackPanel>
+                            <StackPanel Grid.Row="4" Grid.Column="2" Margin="0,16,0,0"><TextBlock Text="ACCOUNT" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="11" FontWeight="Bold"/><ComboBox x:Name="CmbAccount" DisplayMemberPath="Name" TextSearch.TextPath="Name" IsEditable="True" IsTextSearchEnabled="False" StaysOpenOnEdit="True" Style="{StaticResource FormComboInput}"/></StackPanel>
+                        </Grid>
+                    </ScrollViewer>
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                        <Button Content="Cancel" Style="{StaticResource ModalButton}" Background="{DynamicResource ThemeSurface_2D2D4E_Surface}" Click="BtnCloseEditPopup_Click"/>
+                        <Button x:Name="BtnSaveLot" Content="Save Changes" Style="{StaticResource ModalButton}" Background="#06A77D" Click="BtnSaveLot_Click"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>

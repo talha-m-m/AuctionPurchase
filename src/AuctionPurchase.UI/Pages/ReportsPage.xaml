@@ -1,0 +1,201 @@
+<Page x:Class="AuctionPurchase.UI.Pages.ReportsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="clr-namespace:AuctionPurchase.UI.Services"
+      Background="{DynamicResource ThemeSurface_1A1A2E_Surface}" FontFamily="Segoe UI">
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Reports" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource ThemeText_FFFFFF_Text}" Margin="0,0,0,16"/>
+
+        <!-- Filters -->
+        <Border Grid.Row="1" Background="{DynamicResource ThemeSurface_16213E_Surface}" CornerRadius="10" Padding="20,14" Margin="0,0,0,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.25*"/>
+                    <ColumnDefinition Width="1.4*"/>
+                    <ColumnDefinition Width="1.4*"/>
+                    <ColumnDefinition Width="0.85*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                    <TextBlock Text="Session" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="12" Margin="0,0,0,7"/>
+                    <ComboBox x:Name="CmbSessionFilter" DisplayMemberPath="Title" Height="38"
+                              ToolTip="{Binding SelectedItem.Title, RelativeSource={RelativeSource Self}}"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Margin="0,0,16,0">
+                    <TextBlock Text="Report Type" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="12" Margin="0,0,0,7"/>
+                    <ComboBox x:Name="CmbReportType" Height="38" SelectedIndex="0" SelectionChanged="ReportTypeChanged"
+                              ToolTip="{Binding SelectedItem.Content, RelativeSource={RelativeSource Self}}">
+                    <ComboBoxItem Content="All Entries"/>
+                    <ComboBoxItem Content="Brand Wise"/>
+                    <ComboBoxItem Content="Broker Wise"/>
+                    <ComboBoxItem Content="Broker Wise Summary"/>
+                    <ComboBoxItem Content="Brand Wise Summary"/>
+                </ComboBox>
+                </StackPanel>
+                <StackPanel Grid.Column="2" Margin="0,0,16,0">
+                    <TextBlock Text="Template" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="12" Margin="0,0,0,7"/>
+                    <ComboBox x:Name="CmbTemplate" Height="38" ToolTip="{Binding SelectedItem.TemplateName, RelativeSource={RelativeSource Self}}"/>
+                </StackPanel>
+                <StackPanel Grid.Column="3" Margin="0,0,16,0">
+                    <TextBlock Text="Sale No" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="12" Margin="0,0,0,7"/>
+                    <TextBox x:Name="TxtSaleNo" Height="38" ToolTip="Filter by Sale No (partial match)"/>
+                </StackPanel>
+                <Button x:Name="BtnGenerate" Grid.Column="4" Content="🔍 Generate" Width="128" Height="38" VerticalAlignment="Bottom"
+                        Background="#4361EE" Foreground="White" BorderThickness="0" FontSize="13" Cursor="Hand"
+                        Click="BtnGenerate_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True"><Setter Property="Background" Value="#3451D1"/></Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
+        </Border>
+
+        <!-- Report type & Export buttons -->
+        <Border Grid.Row="2" Background="{DynamicResource ThemeSurface_16213E_Surface}" CornerRadius="10" Padding="20,14" Margin="0,0,0,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="1" Content="Design Templates" Width="130" Height="36" Margin="0,0,12,0"
+                        Background="{DynamicResource ThemeSurface_2D2D4E_Surface}" Foreground="{DynamicResource ThemeText_FFFFFF_Text}" BorderThickness="0" Cursor="Hand" Click="BtnDesignTemplates_Click"/>
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <Button x:Name="BtnExportPdf" Content="📄 Export PDF" Width="130" Height="36" Margin="0,0,8,0"
+                            Background="#D62839" Foreground="White" BorderThickness="0" FontSize="12" Cursor="Hand"
+                            Click="BtnExportPdf_Click" IsEnabled="False">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Button x:Name="BtnExportXlsx" Content="📊 Export Excel" Width="140" Height="36" Margin="0,0,8,0"
+                            Background="#06A77D" Foreground="White" BorderThickness="0" FontSize="12" Cursor="Hand"
+                            Click="BtnExportXlsx_Click" IsEnabled="False">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Button x:Name="BtnExportDocx" Content="📝 Export Word" Width="140" Height="36"
+                            Background="#4361EE" Foreground="White" BorderThickness="0" FontSize="12" Cursor="Hand"
+                            Click="BtnExportDocx_Click" IsEnabled="False">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Summary Cards on top of table (like Dashboard) -->
+        <UniformGrid Grid.Row="3" Columns="5" Margin="0,0,0,12">
+            <!-- Total Entries -->
+            <Border Margin="0,0,6,0" Background="{DynamicResource ThemeSurface_16213E_Surface}" CornerRadius="10" Padding="14,10">
+                <Border.Effect><DropShadowEffect Color="#000" BlurRadius="12" ShadowDepth="2" Opacity="0.25"/></Border.Effect>
+                <StackPanel>
+                    <TextBlock Text="📦 Total Entries" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="11" FontWeight="SemiBold"/>
+                    <Viewbox Height="26" Margin="0,4,0,0" HorizontalAlignment="Left">
+                        <TextBlock x:Name="TxtSummaryEntries" Text="0" FontWeight="Bold" Foreground="{DynamicResource ThemeText_4361EE_Text}"/>
+                    </Viewbox>
+                    <TextBlock Text="Filtered lots" Foreground="{DynamicResource ThemeText_5A6684_Text}" FontSize="10" Margin="0,2,0,0"/>
+                </StackPanel>
+            </Border>
+            <!-- Total Bags -->
+            <Border Margin="3,0,3,0" Background="{DynamicResource ThemeSurface_16213E_Surface}" CornerRadius="10" Padding="14,10">
+                <Border.Effect><DropShadowEffect Color="#000" BlurRadius="12" ShadowDepth="2" Opacity="0.25"/></Border.Effect>
+                <StackPanel>
+                    <TextBlock Text="🛍️ Total Bags" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="11" FontWeight="SemiBold"/>
+                    <Viewbox Height="26" Margin="0,4,0,0" HorizontalAlignment="Left">
+                        <TextBlock x:Name="TxtSummaryBags" Text="0" FontWeight="Bold" Foreground="{DynamicResource ThemeText_7B2FBE_Text}"/>
+                    </Viewbox>
+                    <TextBlock Text="Bags in report" Foreground="{DynamicResource ThemeText_5A6684_Text}" FontSize="10" Margin="0,2,0,0"/>
+                </StackPanel>
+            </Border>
+            <!-- Total KGs -->
+            <Border Margin="3,0,3,0" Background="{DynamicResource ThemeSurface_16213E_Surface}" CornerRadius="10" Padding="14,10">
+                <Border.Effect><DropShadowEffect Color="#000" BlurRadius="12" ShadowDepth="2" Opacity="0.25"/></Border.Effect>
+                <StackPanel>
+                    <TextBlock Text="⚖️ Total KGs" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="11" FontWeight="SemiBold"/>
+                    <Viewbox Height="26" Margin="0,4,0,0" HorizontalAlignment="Left">
+                        <TextBlock x:Name="TxtSummaryKgs" Text="0.00" FontWeight="Bold" Foreground="{DynamicResource ThemeText_06A77D_Text}"/>
+                    </Viewbox>
+                    <TextBlock Text="Kilograms purchased" Foreground="{DynamicResource ThemeText_5A6684_Text}" FontSize="10" Margin="0,2,0,0"/>
+                </StackPanel>
+            </Border>
+            <!-- Avg Price -->
+            <Border Margin="3,0,3,0" Background="{DynamicResource ThemeSurface_16213E_Surface}" CornerRadius="10" Padding="14,10">
+                <Border.Effect><DropShadowEffect Color="#000" BlurRadius="12" ShadowDepth="2" Opacity="0.25"/></Border.Effect>
+                <StackPanel>
+                    <TextBlock Text="🏷️ Avg Price/KG" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="11" FontWeight="SemiBold"/>
+                    <Viewbox Height="26" Margin="0,4,0,0" HorizontalAlignment="Left">
+                        <TextBlock x:Name="TxtSummaryAvgPrice" Text="৳0.00" FontWeight="Bold" Foreground="{DynamicResource ThemeText_00B4D8_Text}"/>
+                    </Viewbox>
+                    <TextBlock Text="Weighted avg/kg" Foreground="{DynamicResource ThemeText_5A6684_Text}" FontSize="10" Margin="0,2,0,0"/>
+                </StackPanel>
+            </Border>
+            <!-- Total Value -->
+            <Border Margin="6,0,0,0" Background="{DynamicResource ThemeSurface_16213E_Surface}" CornerRadius="10" Padding="14,10">
+                <Border.Effect><DropShadowEffect Color="#000" BlurRadius="12" ShadowDepth="2" Opacity="0.25"/></Border.Effect>
+                <StackPanel>
+                    <TextBlock Text="💰 Total Value" Foreground="{DynamicResource ThemeText_8890AB_Text}" FontSize="11" FontWeight="SemiBold"/>
+                    <Viewbox Height="26" Margin="0,4,0,0" HorizontalAlignment="Left">
+                        <TextBlock x:Name="TxtSummaryValue" Text="৳0.00" FontWeight="Bold" Foreground="{DynamicResource ThemeText_F7A400_Text}"/>
+                    </Viewbox>
+                    <TextBlock Text="Purchase value" Foreground="{DynamicResource ThemeText_5A6684_Text}" FontSize="10" Margin="0,2,0,0"/>
+                </StackPanel>
+            </Border>
+        </UniformGrid>
+
+        <!-- Results Grid -->
+        <Border Grid.Row="4" Background="{DynamicResource ThemeSurface_16213E_Surface}" CornerRadius="12">
+            <DataGrid ui:TableLayout.Enabled="True" x:Name="GridReport" AutoGenerateColumns="False" IsReadOnly="True"
+                      Background="{DynamicResource ThemeSurface_16213E_Surface}" Foreground="{DynamicResource ThemeText_D0D8F0_Text}" BorderThickness="1" BorderBrush="{DynamicResource TableBorder}"
+                      RowBackground="{DynamicResource ThemeSurface_1E2748_Surface}" AlternatingRowBackground="{DynamicResource ThemeSurface_16213E_Surface}"
+                      GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource ThemeSurface_1A2540_Surface}"
+                      HeadersVisibility="Column" FontSize="12"
+                      CanUserReorderColumns="False" CanUserResizeRows="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Broker" Binding="{Binding BrokerName}" Width="Auto"/>
+                    <DataGridTextColumn Header="Brand" Binding="{Binding BrandName}" Width="Auto"/>
+                    <DataGridTextColumn Header="Sale No" Binding="{Binding SaleNo}" Width="Auto"/>
+                    <DataGridTextColumn Header="Date" Binding="{ui:PreferredDate SaleDate}" Width="Auto"/>
+                    <DataGridTextColumn Header="Lot No" Binding="{Binding LotNo}" Width="Auto"/>
+                    <DataGridTextColumn Header="Garden" Binding="{Binding GardenName}" Width="Auto" MinWidth="120"/>
+                    <DataGridTextColumn Header="Invoice" Binding="{Binding InvoiceNo}" Width="Auto"/>
+                    <DataGridTextColumn Header="Grade" Binding="{Binding GradeName}" Width="Auto"/>
+                    <DataGridTextColumn Header="Bags" Binding="{Binding NumberOfBags}" Width="Auto"/>
+                    <DataGridTextColumn Header="KGs" Binding="{Binding TotalKgs, StringFormat=N2}" Width="Auto"/>
+                    <DataGridTextColumn Header="Price/KG" Binding="{Binding PricePerKg, StringFormat=N2}" Width="Auto"/>
+                    <DataGridTextColumn Header="Value" Binding="{Binding Value, StringFormat=N2}" Width="Auto"/>
+                    <DataGridTextColumn Header="Blend" Binding="{Binding BlendName}" Width="Auto"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+    </Grid>
+</Page>

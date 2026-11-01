@@ -1,0 +1,72 @@
+<Page x:Class="AuctionPurchase.UI.Pages.CompaniesPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="{DynamicResource ThemeSurface_1A1A2E_Surface}" FontFamily="Segoe UI">
+    <Page.Resources>
+        <Style x:Key="Action" TargetType="Button">
+            <Setter Property="Padding" Value="16,10"/><Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="Background" Value="#4361EE"/><Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/><Setter Property="Cursor" Value="Hand"/>
+        </Style>
+    </Page.Resources>
+    <Grid Margin="24">
+        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+        <StackPanel Margin="0,0,0,22">
+            <TextBlock Text="Companies" Foreground="{DynamicResource ThemeText_FFFFFF_Text}" FontSize="24" FontWeight="Bold"/>
+            <TextBlock Text="Group gardens under their company to choose the selling account for each lot."
+                       Foreground="{DynamicResource ThemeText_A5AEC8_Text}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+        </StackPanel>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="22"/><ColumnDefinition Width="1.2*"/></Grid.ColumnDefinitions>
+            <Border Background="{DynamicResource ThemeSurface_16213E_Surface}" CornerRadius="10" Padding="18">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top">
+                        <Button Content="+ New Company" Style="{StaticResource Action}" HorizontalAlignment="Left" Click="New_Click"/>
+                        <TextBlock Text="Search companies or gardens" Foreground="{DynamicResource ThemeText_A5AEC8_Text}" FontSize="11" Margin="0,14,0,6"/>
+                        <TextBox x:Name="TxtCompanySearch" Margin="0,0,0,14" ToolTip="Search companies or gardens" TextChanged="Search_Changed"/>
+                    </StackPanel>
+                    <ListBox x:Name="CompanyList" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource ThemeText_FFFFFF_Text}"
+                             SelectionChanged="Company_Selected" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="6,10">
+                                    <TextBlock Text="{Binding Name}" FontSize="15" FontWeight="SemiBold"/>
+                                    <TextBlock Text="{Binding GardenNames}" Foreground="{DynamicResource ThemeText_A5AEC8_Text}" TextWrapping="Wrap" Margin="0,5,0,0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DockPanel>
+            </Border>
+            <Border Grid.Column="2" Background="{DynamicResource ThemeSurface_16213E_Surface}" CornerRadius="10" Padding="20">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top">
+                        <TextBlock x:Name="TxtEditorTitle" Text="New Company" Foreground="{DynamicResource ThemeText_FFFFFF_Text}" FontSize="19" FontWeight="SemiBold"/>
+                        <TextBlock Text="COMPANY NAME" Foreground="{DynamicResource ThemeText_A5AEC8_Text}" FontSize="11" Margin="0,20,0,6"/>
+                        <TextBox x:Name="TxtName"/>
+                        <CheckBox x:Name="ChkActive" Content="Active company" IsChecked="True" Foreground="{DynamicResource ThemeText_FFFFFF_Text}" Margin="0,14,0,12"/>
+                        <TextBlock Text="GARDENS" Foreground="{DynamicResource ThemeText_A5AEC8_Text}" FontSize="11"/>
+                        <TextBlock Text="Select all gardens owned by this company." Foreground="{DynamicResource ThemeText_A5AEC8_Text}" Margin="0,5,0,8"/>
+                        <TextBox x:Name="TxtGardenSearch" ToolTip="Search gardens" Margin="0,0,0,12" TextChanged="GardenSearch_Changed"/>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Bottom" Margin="0,14,0,0">
+                        <TextBlock x:Name="TxtStatus" Foreground="{DynamicResource ThemeText_A5AEC8_Text}" TextWrapping="Wrap" Margin="0,0,0,12"/>
+                        <WrapPanel>
+                            <Button x:Name="BtnSave" Content="Save Company" Style="{StaticResource Action}" Click="Save_Click"/>
+                            <Button x:Name="BtnDelete" Content="Delete" Style="{StaticResource Action}" Background="#9F3547" Click="Delete_Click" IsEnabled="False"/>
+                        </WrapPanel>
+                    </StackPanel>
+                    <ListBox x:Name="GardenList" Background="{DynamicResource ThemeSurface_101A32_Surface}" BorderThickness="0" Foreground="{DynamicResource ThemeText_FFFFFF_Text}"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" Content="{Binding Label}"
+                                          Foreground="{DynamicResource ThemeText_FFFFFF_Text}" Padding="4,7" IsEnabled="{Binding IsAvailable}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DockPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>
